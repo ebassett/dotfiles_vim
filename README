@@ -1,0 +1,11 @@
+Linux / Mac
+===========
+* git clone https://github.com/ebassett/dotfiles_vim.git ~/.vim
+* chmod u+x ~/.vim/setup_vim.sh
+* ~/.vim/setup_vim.sh
+
+Windows (Vista or later)
+========================
+* git clone https://github.com/ebassett/dotfiles_vim.git %USERPROFILE%\.vim
+* %USERPROFILE%\.vim\setup_vim.bat
+
