@@ -1,4 +1,5 @@
 scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
+set encoding=utf8
 set nocompatible		" Put this first in vimrc (because it affects many other settings).
 
 "===== VUNDLE ==========================
@@ -93,8 +94,8 @@ set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
 "set list				" Display non-printing characters (according to listchars).
-set listchars=tab:»-,trail:·,eol:¶,extends:»,precedes:«,nbsp:°  " Characters for non-printing chars (if 'list' is set)
-set showbreak=»			" Character to indicate soft-wrapped lines.
+set listchars=tab:»-,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Characters for non-printing chars (if 'list' is set).
+set showbreak=`\ 		" String to indicate soft-wrapped lines.
 set noerrorbells		" Suppress audible bell.
 set novisualbell		" Suppress visual bell. cf. t_vb
 set history=100			" Remember last n commands/searchs/etc.
@@ -106,8 +107,8 @@ set scrolloff=3			" Minimum number of screen lines to keep above and below the c
 set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEFT>, <RIGHT>, ~.
 
 "_____Searching_____
+set ignorecase			" Necessary for smartcase to work.
 set smartcase			" Case-sensitive if any capitals in search term, else insensitive. '\c' forces insensitive; '\C' force sensitive.
-set ignorecase			" This must be set for smartcase to work.
 set incsearch			" Incremental search: start matching as soon as you start typing search term.
 set hlsearch			" Highlight search matches.
 set nowrapscan			" Do NOT continue search from top when you reach the bottom.
@@ -288,6 +289,9 @@ endfunc
 "_____vim-startify_____
 let g:startify_bookmarks = [ $HOME.'/.vimrc' ]
 let g:startify_skiplist = [
+		\ '^/tmp',
 		\ 'COMMIT_EDITMSG',
+		\ '^/usr/share/vim/vim7./doc/.*',
 		\ ]
+
 
