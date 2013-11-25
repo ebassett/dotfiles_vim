@@ -93,8 +93,8 @@ set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
 "set list				" Display non-printing characters (according to listchars).
-set listchars=tab:Â»â€”,trail:Â·,eol:Â¶,extends:â€¦,precedes:â€¦,nbsp:Â°  " Characters for non-printing chars (if 'list' is set).
-set showbreak=â†ª			" Character to indicate soft-wrapped lines.
+set listchars=tab:»-,trail:·,eol:¶,extends:»,precedes:«,nbsp:°  " Characters for non-printing chars (if 'list' is set)
+set showbreak=»			" Character to indicate soft-wrapped lines.
 set noerrorbells		" Suppress audible bell.
 set novisualbell		" Suppress visual bell. cf. t_vb
 set history=100			" Remember last n commands/searchs/etc.
@@ -107,6 +107,7 @@ set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEF
 
 "_____Searching_____
 set smartcase			" Case-sensitive if any capitals in search term, else insensitive. '\c' forces insensitive; '\C' force sensitive.
+set ignorecase			" This must be set for smartcase to work.
 set incsearch			" Incremental search: start matching as soon as you start typing search term.
 set hlsearch			" Highlight search matches.
 set nowrapscan			" Do NOT continue search from top when you reach the bottom.
@@ -263,6 +264,11 @@ augroup VIMRC
 	autocmd bufwritepost $MYVIMRC AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
 augroup END
 
+" biolog-specific settings
+augroup BIOLOG
+	autocmd! BIOLOG
+	autocmd! BufRead,BufNewFile biolog.txt set expandtab
+augroup END
 
 "===== FUNCTIONS =======================
 " Toggle between absolute and relative line-numbering.
