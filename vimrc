@@ -107,6 +107,7 @@ set scrolloff=3			" Minimum number of screen lines to keep above and below the c
 set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEFT>, <RIGHT>, ~.
 
 "_____Searching_____
+set ignorecase			" Necessary for smartcase to work.
 set smartcase			" Case-sensitive if any capitals in search term, else insensitive. '\c' forces insensitive; '\C' force sensitive.
 set incsearch			" Incremental search: start matching as soon as you start typing search term.
 set hlsearch			" Highlight search matches.
