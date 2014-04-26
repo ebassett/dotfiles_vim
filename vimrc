@@ -1,4 +1,4 @@
-scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
+ï»¿scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
 set encoding=utf8
 set nocompatible		" Put this first in vimrc (because it affects many other settings).
 
@@ -94,8 +94,8 @@ set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
 "set list				" Display non-printing characters (according to listchars).
-set listchars=tab:»-,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Characters for non-printing chars (if 'list' is set).
-set showbreak=`\ 		" String to indicate soft-wrapped lines.
+set listchars=tab:Â»-,trail:Â·,eol:Â¶,extends:Ã—,precedes:Ã·,nbsp:Â°  " Characters for non-printing chars (if 'list' is set).
+set showbreak=\|		" String to indicate soft-wrapped lines.
 set noerrorbells		" Suppress audible bell.
 set novisualbell		" Suppress visual bell. cf. t_vb
 set history=100			" Remember last n commands/searchs/etc.
