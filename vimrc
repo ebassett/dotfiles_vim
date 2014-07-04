@@ -1,4 +1,4 @@
-scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
+ï»¿scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
 set encoding=utf8
 set nocompatible		" Put this first in vimrc (because it affects many other settings).
 
@@ -31,7 +31,7 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'tpope/vim-fugitive'
 " Use '%' to jump between HTML/XML tags, if/else-if/else, etc.
 Bundle 'vim-scripts/matchit.zip'
-" Highlight multiple search terms in different colours simulatneously. cf. the MultipleSearch plugin.
+" Highlight multiple search terms in different colours simultaneously. cf. the MultipleSearch plugin.
 Bundle 'vim-scripts/multisearch.vim'
 " File explorer.
 Bundle 'scrooloose/nerdtree'
@@ -82,7 +82,7 @@ set formatoptions+=rjl	" r = prefix comment character on Enter from a comment li
 						" l = don't hard-wrap long lines.
 set pastetoggle=<F3>	" Allow pasting from system clipboard into terminal vim without messing up indents.
 						" See also the <F3> keymapping below.
-						
+
 "_____Extra-textual info/visibility_____
 set number				" Line numbers (absolute). See KEY-MAPPINGS and FUNCTIONS for relative-numbering toggle.
 set showmode			" Shows the mode in the last line. (This is actually on by default.)
@@ -94,8 +94,8 @@ set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
 "set list				" Display non-printing characters (according to listchars).
-set listchars=tab:»-,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Characters for non-printing chars (if 'list' is set).
-set showbreak=`\ 		" String to indicate soft-wrapped lines.
+set listchars=tab:Â»-,trail:Â·,eol:Â¶,extends:Ã—,precedes:Ã·,nbsp:Â°  " Characters for non-printing chars (if 'list' is set).
+set showbreak=\|		" String to indicate soft-wrapped lines.
 set noerrorbells		" Suppress audible bell.
 set novisualbell		" Suppress visual bell. cf. t_vb
 set history=100			" Remember last n commands/searchs/etc.
@@ -200,15 +200,15 @@ nnoremap <Leader><CR> i<CR><ESC>
 " Blank line below/above current (from and remaining in normal mode).
 nnoremap <Leader>o o<ESC>
 nnoremap <Leader>O O<ESC>
-" Toggle paste mode to paste properly indented text in the terminal. Note needed for gvim.
+" Toggle paste mode to paste properly indented text in the terminal. Not needed for gvim.
 " This echoes the paste mode to the status line as well. See also 'set togglepaste' above.
 nnoremap <silent> <F3> :set invpaste paste?<CR>
 " Insert date.
 nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>P
 
 "_____Extra-textual info/visibility_____
-" Use 'jk' to get out of insert mode into normal mode.
-inoremap jk <ESC>
+" Use 'kj' to get out of insert mode into normal mode.
+inoremap kj <ESC>
 " Toggle absolute/relative line-numbering
 nnoremap <Leader>n :call g:ToggleNumberMode()<CR>
 noremap <C-V> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
@@ -226,9 +226,17 @@ vnoremap <Up> gk
 vnoremap <Down> gj
 
 "_____Searching_____
-" 'Very magic' regexes (less escaping).
+" 'Very magic' regexes (less escaping) for '/' and '?' searches.
 nnoremap / /\v
 xnoremap / /\v
+nnoremap ? ?\v
+xnoremap ? ?\v
+" See discussion at http://stackoverflow.com/questions/3760444/in-vim-is-there-a-way-to-set-very-magic-permanently-and-globally
+" I usually use '#' as the delimiter in substitutions.
+cnoremap %s# %smagic#
+cnoremap >s# >smagic#
+nnoremap :g/ :g/\v
+nnoremap :g// :g//
 " Clear search highlights
 nnoremap <Leader>/ :nohlsearch<CR>
 
@@ -239,7 +247,6 @@ command! W w
 command! WQ wq
 command! Wq wq
 command! Q q
-
 
 "===== AUTOCOMMANDS ====================
 
@@ -258,6 +265,12 @@ augroup PYTHON
 	autocmd FileType python setlocal expandtab
 augroup END
 
+" Pretty-print (indent) XML with eg. gg=G
+augroup XML_INDENT
+	autocmd! XML_INDENT
+	autocmd! FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+augroup END
+
 augroup VIMRC
 	" Unload group before reloading. (See Learn Vimscript the Hard Way.)
 	autocmd! VIMRC
@@ -271,16 +284,22 @@ augroup BIOLOG
 	autocmd! BufRead,BufNewFile biolog.txt set expandtab
 augroup END
 
+
 "===== FUNCTIONS =======================
 " Toggle between absolute and relative line-numbering.
 function! g:ToggleNumberMode()
 	if(&relativenumber == 1)
+		set norelativenumber
 		set number
 	else
+		set nonumber
 		set relativenumber
 	endif
 endfunc
 
+function! g:NaturalSort(i, j)
+	return (a:i+0) - (a:j+0)
+endfunc
 
 "===== PLUGIN SETTINGS =================
 "_____vim-airline_____
