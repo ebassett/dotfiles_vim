@@ -76,7 +76,7 @@ set smartindent			" cf. cindent
 "_____Other text manipulation_____
 set textwidth=0			" NEVER automatically insert a hard newline.
 set linebreak			" Soft-wrap at word boundaries rather than right at the end of the screen.
-" See '':help fo-table' for formatoptions options. vim default is 'tcq'. Use '+=' and '-=' to modify.
+" See ':help fo-table' for formatoptions options. vim default is 'tcq'. Use '+=' and '-=' to modify.
 set formatoptions+=rjl	" r = prefix comment character on Enter from a comment line;
 						" j = drop second comment marker when joining two comment lines;
 						" l = don't hard-wrap long lines.
@@ -259,7 +259,7 @@ augroup END
 " Python as per PEP 8 (http://www.python.org/dev/peps/pep-0008/).
 augroup PYTHON
 	autocmd! PYTHON
-	" Use 4 spaces for indentation and lantin1 as encoding.
+	" Use 4 spaces for indentation and latin1 as encoding.
 	autocmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=4 enc=latin1
 	" And work's python coding convention: spaces instead of tabs.
 	autocmd FileType python setlocal expandtab
@@ -284,6 +284,11 @@ augroup BIOLOG
 	autocmd! BufRead,BufNewFile biolog.txt set expandtab
 augroup END
 
+" Pretty-print (indent) XML with eg. gg=G
+augroup XML_INDENT
+	autocmd! XML_INDENT
+	autocmd! FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+augroup END
 
 "===== FUNCTIONS =======================
 " Toggle between absolute and relative line-numbering.
@@ -291,9 +296,11 @@ function! g:ToggleNumberMode()
 	if(&relativenumber == 1)
 		set norelativenumber
 		set number
+		set norelativenumber
 	else
 		set nonumber
 		set relativenumber
+		set nonumber
 	endif
 endfunc
 
