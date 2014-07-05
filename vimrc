@@ -252,6 +252,12 @@ command! Q q
 
 "===== AUTOCOMMANDS ====================
 
+" biolog-specific settings
+augroup BIOLOG
+	autocmd! BIOLOG
+	autocmd! BufRead,BufNewFile biolog.txt set expandtab
+augroup END
+
 " Type detection for JSON files.
 augroup JSON
 	autocmd! JSON
@@ -267,23 +273,11 @@ augroup PYTHON
 	autocmd FileType python setlocal expandtab
 augroup END
 
-" Pretty-print (indent) XML with eg. gg=G
-augroup XML_INDENT
-	autocmd! XML_INDENT
-	autocmd! FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
-augroup END
-
 augroup VIMRC
 	" Unload group before reloading. (See Learn Vimscript the Hard Way.)
 	autocmd! VIMRC
 	autocmd bufwritepost $MYVIMRC source %  " Automatically reload .vimrc (this file) when saving it.
 	autocmd bufwritepost $MYVIMRC AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
-augroup END
-
-" biolog-specific settings
-augroup BIOLOG
-	autocmd! BIOLOG
-	autocmd! BufRead,BufNewFile biolog.txt set expandtab
 augroup END
 
 " Pretty-print (indent) XML with eg. gg=G
