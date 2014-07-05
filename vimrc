@@ -4,61 +4,62 @@ set nocompatible		" Put this first in vimrc (because it affects many other setti
 
 "===== VUNDLE ==========================
 " Brief help
-" :BundleList			-  list configured bundles
-" :BundleInstall(!)		-  install (update) bundles
-" :BundleUpdate			-  update bundles
-" :BundleSearch(!) foo	-  search (or refresh cache first) for foo
-" :BundleClean(!)		-  confirm (or auto-approve) removal of unused bundles
+" :PluginList			-  list configured plugins
+" :PluginInstall(!)		-  install (update) plugins
+" :PluginUpdate			-  update plugins
+" :PluginSearch(!) foo	-  search (or refresh cache first) for foo
+" :PluginClean(!)		-  confirm (or auto-approve) removal of unused plugins
 " See :help vundle for more details or https://github.com/gmarik/vundle/wiki for FAQ
-" NOTE: Comments after 'Bundle' command are not allowed.
+" NOTE: Comments after 'Plugin' command are not allowed.
 " NOTE: Add 'bundle/**' and then '~bundle/vundle' to .gitignore so that git tracks only vundle itself.
 
 filetype off  " Required for Vundle; turn on again afterwards.
 set runtimepath+=$HOME/.vim/bundle/vundle/
-call vundle#rc()
+call vundle#begin()
 
 " Let Vundle manage Vundle. Required.
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 "-- original github repos --
 " Powerful yet light statusline.
-Bundle 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 " Intelligently auto-closes brackets and other things that come in pairs.
-Bundle 'vim-scripts/AutoClose'
+Plugin 'vim-scripts/AutoClose'
 " Deal more intelligently with .swp files
-Bundle 'gioele/vim-autoswap'
+Plugin 'gioele/vim-autoswap'
 " Super-quick jump to word.
-Bundle 'Lokaltog/vim-easymotion'
+Plugin 'Lokaltog/vim-easymotion'
 " git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 " Use '%' to jump between HTML/XML tags, if/else-if/else, etc.
-Bundle 'vim-scripts/matchit.zip'
+Plugin 'vim-scripts/matchit.zip'
 " Highlight multiple search terms in different colours simultaneously. cf. the MultipleSearch plugin.
-Bundle 'vim-scripts/multisearch.vim'
+Plugin 'vim-scripts/multisearch.vim'
 " File explorer.
-Bundle 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 " Convenience for XML/HTML tags.
-"Bundle 'tpope/vim-ragtag'
+"Plugin 'tpope/vim-ragtag'
 " Lets '.' work with (supported) complex (plugin) commands.
-Bundle 'tpope/vim-repeat'
+Plugin 'tpope/vim-repeat'
 " Code snippets.
-"Bundle 'msanders/snipmate'
+"Plugin 'msanders/snipmate'
 " Startup screen with recently-used files, sessions, bookmarks, etc.
-Bundle 'mhinz/vim-startify'
+Plugin 'mhinz/vim-startify'
 " Wrap existing text in quotes, brackets, tags, etc.
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'
 " Toggle comments / comment blocks. Another posibility is 'scrooloose/nerdcommenter'.
-Bundle 'tomtom/tcomment_vim'
+Plugin 'tomtom/tcomment_vim'
 
 "-- vim-scripts.org repos --
-"Example:	Bundle 'FuzzyFinder'
+"Example:	Plugin 'FuzzyFinder'
 
 "-- non-github repos --
-"Example:	Bundle 'git://git.wincent.com/command-t.git'
+"Example:	Plugin 'git://git.wincent.com/command-t.git'
 
 "-- *local* git repos --
-"Example:	Bundle 'file:///Users/gmarik/path/to/plugin'
+"Example:	Plugin 'file:///Users/gmarik/path/to/plugin'
 
+call vundle#end()
 filetype plugin indent on  " Required. Equivalent to 'filetype on' AND 'filetype plugin on' AND 'filetype indent on'.
 
 
