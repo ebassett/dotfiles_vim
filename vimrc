@@ -25,13 +25,15 @@ Bundle 'gmarik/vundle'
 Bundle 'bling/vim-airline'
 " Intelligently auto-closes brackets and other things that come in pairs.
 Bundle 'vim-scripts/AutoClose'
+" Deal more intelligently with .swp files
+Bundle 'gioele/vim-autoswap'
 " Super-quick jump to word.
 Bundle 'Lokaltog/vim-easymotion'
 " git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
 Bundle 'tpope/vim-fugitive'
 " Use '%' to jump between HTML/XML tags, if/else-if/else, etc.
 Bundle 'vim-scripts/matchit.zip'
-" Highlight multiple search terms in different colours simulatneously. cf. the MultipleSearch plugin.
+" Highlight multiple search terms in different colours simultaneously. cf. the MultipleSearch plugin.
 Bundle 'vim-scripts/multisearch.vim'
 " File explorer.
 Bundle 'scrooloose/nerdtree'
@@ -82,7 +84,7 @@ set formatoptions+=rjl	" r = prefix comment character on Enter from a comment li
 						" l = don't hard-wrap long lines.
 set pastetoggle=<F3>	" Allow pasting from system clipboard into terminal vim without messing up indents.
 						" See also the <F3> keymapping below.
-						
+
 "_____Extra-textual info/visibility_____
 set number				" Line numbers (absolute). See KEY-MAPPINGS and FUNCTIONS for relative-numbering toggle.
 set showmode			" Shows the mode in the last line. (This is actually on by default.)
