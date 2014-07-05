@@ -202,7 +202,7 @@ nnoremap <Leader><CR> i<CR><ESC>
 " Blank line below/above current (from and remaining in normal mode).
 nnoremap <Leader>o o<ESC>
 nnoremap <Leader>O O<ESC>
-" Toggle paste mode to paste properly indented text in the terminal. Note needed for gvim.
+" Toggle paste mode to paste properly indented text in the terminal. Not needed for gvim.
 " This echoes the paste mode to the status line as well. See also 'set togglepaste' above.
 nnoremap <silent> <F3> :set invpaste paste?<CR>
 " Insert date.
@@ -228,9 +228,17 @@ vnoremap <Up> gk
 vnoremap <Down> gj
 
 "_____Searching_____
-" 'Very magic' regexes (less escaping).
+" 'Very magic' regexes (less escaping) for '/' and '?' searches.
 nnoremap / /\v
 xnoremap / /\v
+nnoremap ? ?\v
+xnoremap ? ?\v
+" See discussion at http://stackoverflow.com/questions/3760444/in-vim-is-there-a-way-to-set-very-magic-permanently-and-globally
+" I usually use '#' as the delimiter in substitutions.
+cnoremap %s# %smagic#
+cnoremap >s# >smagic#
+nnoremap :g/ :g/\v
+nnoremap :g// :g//
 " Clear search highlights
 nnoremap <Leader>/ :nohlsearch<CR>
 
@@ -241,7 +249,6 @@ command! W w
 command! WQ wq
 command! Wq wq
 command! Q q
-
 
 "===== AUTOCOMMANDS ====================
 
@@ -260,11 +267,23 @@ augroup PYTHON
 	autocmd FileType python setlocal expandtab
 augroup END
 
+" Pretty-print (indent) XML with eg. gg=G
+augroup XML_INDENT
+	autocmd! XML_INDENT
+	autocmd! FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+augroup END
+
 augroup VIMRC
 	" Unload group before reloading. (See Learn Vimscript the Hard Way.)
 	autocmd! VIMRC
 	autocmd bufwritepost $MYVIMRC source %  " Automatically reload .vimrc (this file) when saving it.
 	autocmd bufwritepost $MYVIMRC AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
+augroup END
+
+" biolog-specific settings
+augroup BIOLOG
+	autocmd! BIOLOG
+	autocmd! BufRead,BufNewFile biolog.txt set expandtab
 augroup END
 
 " Pretty-print (indent) XML with eg. gg=G
@@ -277,14 +296,19 @@ augroup END
 " Toggle between absolute and relative line-numbering.
 function! g:ToggleNumberMode()
 	if(&relativenumber == 1)
+		set norelativenumber
 		set number
 		set norelativenumber
 	else
+		set nonumber
 		set relativenumber
 		set nonumber
 	endif
 endfunc
 
+function! g:NaturalSort(i, j)
+	return (a:i+0) - (a:j+0)
+endfunc
 
 "===== PLUGIN SETTINGS =================
 "_____vim-airline_____
