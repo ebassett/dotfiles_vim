@@ -31,6 +31,7 @@ Plugin 'tpope/vim-repeat'			" Lets '.' (repeat) work with (supported) plugin com
 "Plugin 'msanders/snipmate'			" Code snippets.
 Plugin 'tpope/vim-speeddating'		" Use CTRL-A/CTRL-X to increment/decrement dates, times, and more.
 Plugin 'mhinz/vim-startify'			" Startup screen with recently-used files, sessions, bookmarks, etc.
+Plugin 'majutsushi/tagbar'			" Sidebar for coding symbols (ctags).
 Plugin 'tpope/vim-surround'			" Wrap existing text in quotes, brackets, tags, etc.
 Plugin 'tomtom/tcomment_vim'		" Toggle line-/block-wise comments.
 
@@ -199,8 +200,9 @@ inoremap kj <ESC>
 " Toggle absolute/relative line-numbering
 nnoremap <Leader>n :call g:ToggleNumberMode()<CR>
 noremap <C-V> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
-" NERDTree toggle.
 noremap <F2> :execute 'NERDTreeToggle ' . getcwd()<CR>
+nnoremap <Leader>R :RainbowParenthesesToggle<CR>
+noremap <F8> :execute 'TagbarToggle'<CR>
 
 "_____Movement_____
 " Make jk work screen-line-wise.
