@@ -3,60 +3,44 @@ set encoding=utf8
 set nocompatible		" Put this first in vimrc (because it affects many other settings).
 
 "===== VUNDLE ==========================
-" Brief help
 " :PluginList			-  list configured plugins
-" :PluginInstall(!)		-  install (update) plugins
+" :PluginInstall[!]		-  install (! => update) plugins
 " :PluginUpdate			-  update plugins
-" :PluginSearch(!) foo	-  search (or refresh cache first) for foo
-" :PluginClean(!)		-  confirm (or auto-approve) removal of unused plugins
+" :PluginSearch[!] foo	-  search (! => refresh cache first) for foo
+" :PluginClean[!]		-  confirm (! => auto-approve) removal of unused plugins
 " See :help vundle for more details or https://github.com/gmarik/vundle/wiki for FAQ
-" NOTE: Comments after 'Plugin' command are not allowed.
-" NOTE: Add 'bundle/**' and then '~bundle/vundle' to .gitignore so that git tracks only vundle itself.
+" NOTE: Add to .gitignore: 'bundle/**' and then exception '~bundle/vundle' so that git tracks only vundle itself.
 
-filetype off  " Required for Vundle; turn on again afterwards.
+filetype off  " Required for Vundle startup; turn on again afterwards.
 set runtimepath+=$HOME/.vim/bundle/vundle/
 call vundle#begin()
-
-" Let Vundle manage Vundle. Required.
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/vundle' " Let Vundle manage Vundle. Required.
 
 "-- original github repos --
-" Powerful yet light statusline.
-Plugin 'bling/vim-airline'
-" Intelligently auto-closes brackets and other things that come in pairs.
-Plugin 'vim-scripts/AutoClose'
-" Deal more intelligently with .swp files
-Plugin 'gioele/vim-autoswap'
-" Super-quick jump to word.
-Plugin 'Lokaltog/vim-easymotion'
-" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
-Plugin 'tpope/vim-fugitive'
-" Use '%' to jump between HTML/XML tags, if/else-if/else, etc.
-Plugin 'vim-scripts/matchit.zip'
-" Highlight multiple search terms in different colours simultaneously. cf. the MultipleSearch plugin.
-Plugin 'vim-scripts/multisearch.vim'
-" File explorer.
-Plugin 'scrooloose/nerdtree'
-" Convenience for XML/HTML tags.
-"Plugin 'tpope/vim-ragtag'
-" Lets '.' work with (supported) complex (plugin) commands.
-Plugin 'tpope/vim-repeat'
-" Code snippets.
-"Plugin 'msanders/snipmate'
-" Startup screen with recently-used files, sessions, bookmarks, etc.
-Plugin 'mhinz/vim-startify'
-" Wrap existing text in quotes, brackets, tags, etc.
-Plugin 'tpope/vim-surround'
-" Toggle comments / comment blocks. Another posibility is 'scrooloose/nerdcommenter'.
-Plugin 'tomtom/tcomment_vim'
+Plugin 'bling/vim-airline'			" Powerful yet light statusline. :help airline for config options.
+Plugin 'vim-scripts/AutoClose'		" Auto-closes (, [, {, \", '.
+Plugin 'gioele/vim-autoswap'		" Deal more intelligently with .swp files.
+Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc. :help easymotion
+"Plugin 'tpope/vim-fugitive'		" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
+Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/XML tags, if/else-if/else, etc.
+Plugin 'vim-scripts/MultipleSearch'	" Highlight multiple search terms in different colours. :help MultipleSearch
+Plugin 'scrooloose/nerdtree'		" File explorer. (:help nerdtree) I have :NERDTreeToggle mapped to <F2>
+"Plugin 'tpope/vim-ragtag'			" Convenience for XML/HTML tags.
+Plugin 'kien/rainbow_parentheses.vim'  " Colours parentheses and brackets according to nesting.
+Plugin 'tpope/vim-repeat'			" Lets '.' (repeat) work with (supported) plugin commands.
+"Plugin 'msanders/snipmate'			" Code snippets.
+Plugin 'tpope/vim-speeddating'		" Use CTRL-A/CTRL-X to increment/decrement dates, times, and more.
+Plugin 'mhinz/vim-startify'			" Startup screen with recently-used files, sessions, bookmarks, etc.
+Plugin 'tpope/vim-surround'			" Wrap existing text in quotes, brackets, tags, etc.
+Plugin 'tomtom/tcomment_vim'		" Toggle line-/block-wise comments.
 
 "-- vim-scripts.org repos --
-"Example:	Plugin 'FuzzyFinder'
+Plugin 'python_match.vim'			" Use '%' to jump between Python if/elif/else, try/except/catch, etc.
 
 "-- non-github repos --
 "Example:	Plugin 'git://git.wincent.com/command-t.git'
 
-"-- *local* git repos --
+"-- *local* files --
 "Example:	Plugin 'file:///Users/gmarik/path/to/plugin'
 
 call vundle#end()
@@ -229,7 +213,7 @@ vnoremap <Up> gk
 vnoremap <Down> gj
 
 "_____Searching_____
-" 'Very magic' regexes (less escaping) for '/' and '?' searches.
+" 'Very magic' (:help \v) regexes (less escaping) for '/' and '?' searches.
 nnoremap / /\v
 xnoremap / /\v
 nnoremap ? ?\v
@@ -240,8 +224,8 @@ cnoremap %s# %smagic#
 cnoremap >s# >smagic#
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
-" Clear search highlights
-nnoremap <Leader>/ :nohlsearch<CR>
+" Clear search highlights, including from :Search (MultipleSearch plugin)
+nnoremap <Leader>/ :nohlsearch \| :SearchReset<CR>
 
 
 "===== COMMAND ALIASES =================
@@ -253,7 +237,7 @@ command! Q q
 
 "===== AUTOCOMMANDS ====================
 
-" biolog-specific settings
+" Work: biolog-specific settings: never tabs, always spaces.
 augroup BIOLOG
 	autocmd! BIOLOG
 	autocmd! BufRead,BufNewFile biolog.txt set expandtab
@@ -281,23 +265,21 @@ augroup VIMRC
 	autocmd bufwritepost $MYVIMRC AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
 augroup END
 
-" Pretty-print (indent) XML with eg. gg=G
+" Pretty-print (indent) XML with eg. gg=G - Requires xmllint in $PATH
 augroup XML_INDENT
 	autocmd! XML_INDENT
 	autocmd! FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 augroup END
 
 "===== FUNCTIONS =======================
-" Toggle between absolute and relative line-numbering.
+" Toggle between absolute and relative line-numbering. I have this mapped to <Leader>n
 function! g:ToggleNumberMode()
 	if(&relativenumber == 1)
 		set norelativenumber
 		set number
-		set norelativenumber
 	else
 		set nonumber
 		set relativenumber
-		set nonumber
 	endif
 endfunc
 
@@ -316,5 +298,4 @@ let g:startify_skiplist = [
 		\ 'COMMIT_EDITMSG',
 		\ '^/usr/share/vim/vim7./doc/.*',
 		\ ]
-
 
