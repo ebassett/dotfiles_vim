@@ -229,6 +229,9 @@ nnoremap :g// :g//
 " Clear search highlights, including from :Search (MultipleSearch plugin)
 nnoremap <Leader>/ :nohlsearch \| :SearchReset<CR>
 
+"===== ABBREVIATIONS ===================
+abbr becuase because
+abbr teh the
 
 "===== COMMAND ALIASES =================
 " These typo fixes are fine but note that any arguments will not get passed through.
