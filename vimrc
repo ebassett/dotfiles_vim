@@ -198,7 +198,7 @@ nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>P
 " Use 'kj' to get out of insert mode into normal mode.
 inoremap kj <ESC>
 " Toggle absolute/relative line-numbering
-nnoremap <Leader>n :call g:ToggleNumberMode()<CR>
+nnoremap <Leader>num :call g:ToggleNumberMode()<CR>
 noremap <C-V> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
 noremap <F2> :execute 'NERDTreeToggle ' . getcwd()<CR>
 nnoremap <Leader>R :RainbowParenthesesToggle<CR>
@@ -307,6 +307,7 @@ abbr binaires binaries
 abbr execpt except
 abbr mabye maybe
 abbr prelfight preflight
+abbr taht that
 abbr teh the
 abbr verison version
 
