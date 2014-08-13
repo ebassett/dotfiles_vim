@@ -197,9 +197,13 @@ nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>P
 "_____Extra-textual info/visibility_____
 " Use 'kj' to get out of insert mode into normal mode.
 inoremap kj <ESC>
+" Swap ':' and ';'
+nnoremap : ;
+nnoremap ; :
 " Toggle absolute/relative line-numbering
 nnoremap <Leader>num :call g:ToggleNumberMode()<CR>
 noremap <C-V> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
+noremap <Leader>l :set list!<CR>
 noremap <F2> :execute 'NERDTreeToggle ' . getcwd()<CR>
 nnoremap <Leader>R :RainbowParenthesesToggle<CR>
 noremap <F8> :execute 'TagbarToggle'<CR>
@@ -273,7 +277,7 @@ augroup XML_INDENT
 augroup END
 
 "===== FUNCTIONS =======================
-" Toggle between absolute and relative line-numbering. I have this mapped to <Leader>n
+" Toggle between absolute and relative line-numbering. I have this mapped to <Leader>num
 function! g:ToggleNumberMode()
 	if(&relativenumber == 1)
 		set norelativenumber
