@@ -25,7 +25,7 @@ Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc
 Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/XML tags, if/else-if/else, etc.
 Plugin 'vim-scripts/MultipleSearch'	" Highlight multiple search terms in different colours. :help MultipleSearch
 Plugin 'scrooloose/nerdtree'		" File explorer. (:help nerdtree) I have :NERDTreeToggle mapped to <F2>
-"Plugin 'tpope/vim-ragtag'			" Convenience for XML/HTML tags.
+Plugin 'tpope/vim-ragtag'			" Convenience for XML/HTML tags.
 Plugin 'kien/rainbow_parentheses.vim'  " Colours parentheses and brackets according to nesting.
 Plugin 'tpope/vim-repeat'			" Lets '.' (repeat) work with (supported) plugin commands.
 "Plugin 'msanders/snipmate'			" Code snippets.
@@ -197,9 +197,11 @@ nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>P
 "_____Extra-textual info/visibility_____
 " Use 'kj' to get out of insert mode into normal mode.
 inoremap kj <ESC>
-" Swap ':' and ';'
+" Swap ':' and ';' in normal mode and visual mode
 nnoremap : ;
 nnoremap ; :
+vnoremap : ;
+vnoremap ; :
 " Toggle absolute/relative line-numbering
 nnoremap <Leader>num :call g:ToggleNumberMode()<CR>
 noremap <C-V> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
