@@ -192,7 +192,7 @@ nnoremap <Leader>O O<ESC>
 " This echoes the paste mode to the status line as well. See also 'set togglepaste' above.
 nnoremap <silent> <F3> :set invpaste paste?<CR>
 " Insert date.
-nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>P
+nnoremap <Leader>date "=strftime(" %Y-%m-%d")<CR>P
 
 "_____Extra-textual info/visibility_____
 " Use 'kj' to get out of insert mode into normal mode.
@@ -247,13 +247,14 @@ command! Q q
 " Work: biolog-specific settings: never tabs, always spaces, tab=2 spaces.
 augroup BIOLOG
 	autocmd! BIOLOG
-	autocmd! BufRead,BufNewFile biolog.txt set expandtab shiftwidth=2 softtabstop=2 tabstop=2
+	autocmd BufRead,BufNewFile biolog.txt set expandtab shiftwidth=2 softtabstop=2 tabstop=2
+	autocmd BufRead,BufNewFile biolog.txt syn match Todo "\<\(TODO\|EJB\)"
 augroup END
 
 " Type detection for JSON files.
 augroup JSON
 	autocmd! JSON
-	autocmd! BufRead,BufNewFile *.json set filetype=json
+	autocmd BufRead,BufNewFile *.json set filetype=json
 augroup END
 
 " Python as per PEP 8 (http://www.python.org/dev/peps/pep-0008/).
@@ -266,27 +267,27 @@ augroup PYTHON
 augroup END
 
 augroup VIMRC
-	" Unload group before reloading. (See Learn Vimscript the Hard Way.)
 	autocmd! VIMRC
-	autocmd bufwritepost $MYVIMRC source %  " Automatically reload .vimrc (this file) when saving it.
-	autocmd bufwritepost $MYVIMRC AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
+	autocmd BufWritePost $MYVIMRC source %  " Automatically reload .vimrc (this file) when saving it.
+	autocmd BufWritePost $MYVIMRC AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
 augroup END
 
 " Pretty-print (indent) XML with eg. gg=G - Requires xmllint in $PATH
 augroup XML_INDENT
 	autocmd! XML_INDENT
-	autocmd! FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+	autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 augroup END
 
 "===== FUNCTIONS =======================
-" Toggle between absolute and relative line-numbering. I have this mapped to <Leader>num
+" Toggle between absolute, relative, and no line-numbering. I have this mapped to <Leader>num
 function! g:ToggleNumberMode()
-	if(&relativenumber == 1)
-		set norelativenumber
-		set number
-	else
-		set nonumber
+	if(&number == 1)
 		set relativenumber
+		set nonumber
+	elseif(&relativenumber == 1)
+		set norelativenumber
+	else
+		set number
 	endif
 endfunc
 
@@ -308,12 +309,12 @@ let g:startify_skiplist = [
 
 "===== ABBREVIATIONS ===================
 "_____Spelling corrections_____
-abbr becuase because
-abbr binaires binaries
-abbr execpt except
-abbr mabye maybe
-abbr prelfight preflight
-abbr taht that
-abbr teh the
-abbr verison version
+iabbr becuase because
+iabbr binaires binaries
+iabbr execpt except
+iabbr mabye maybe
+iabbr prelfight preflight
+iabbr taht that
+iabbr teh the
+iabbr verison version
 
