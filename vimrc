@@ -192,7 +192,7 @@ nnoremap <Leader>O O<ESC>
 " This echoes the paste mode to the status line as well. See also 'set togglepaste' above.
 nnoremap <silent> <F3> :set invpaste paste?<CR>
 " Insert date.
-nnoremap <Leader>date "=strftime(" %Y-%m-%d")<CR>P
+nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>p
 
 "_____Extra-textual info/visibility_____
 " Use 'kj' to get out of insert mode into normal mode.
@@ -233,7 +233,7 @@ cnoremap >s# >smagic#
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
 " Clear search highlights, including from :Search (MultipleSearch plugin)
-nnoremap <Leader>/ :nohlsearch \| :SearchReset<CR>
+nnoremap <Leader>/ :nohlsearch \| :Search \| :SearchReset<CR>
 
 "===== COMMAND ALIASES =================
 " These typo fixes are fine but note that any arguments will not get passed through.
