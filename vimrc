@@ -26,18 +26,19 @@ Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/
 Plugin 'techlivezheng/vim-plugin-minibufexpl'  " Tabline for open buffers.
 Plugin 'vim-scripts/MultipleSearch'	" Highlight multiple search terms in different colours. :help MultipleSearch
 Plugin 'scrooloose/nerdtree'		" File explorer. (:help nerdtree) I have :NERDTreeToggle mapped to <F2>
+Plugin 'vim-scripts/python_match.vim' " Use '%' to jump between Python if/elif/else, try/except/catch, etc.
 Plugin 'tpope/vim-ragtag'			" Convenience for XML/HTML tags.
 Plugin 'kien/rainbow_parentheses.vim'  " Colours parentheses and brackets according to nesting.
 Plugin 'tpope/vim-repeat'			" Lets '.' (repeat) work with (supported) plugin commands.
 "Plugin 'msanders/snipmate'			" Code snippets.
 Plugin 'tpope/vim-speeddating'		" Use CTRL-A/CTRL-X to increment/decrement dates, times, and more.
 Plugin 'mhinz/vim-startify'			" Startup screen with recently-used files, sessions, bookmarks, etc.
-Plugin 'majutsushi/tagbar'			" Sidebar for coding symbols (ctags).
 Plugin 'tpope/vim-surround'			" Wrap existing text in quotes, brackets, tags, etc.
+Plugin 'majutsushi/tagbar'			" Sidebar for coding symbols (ctags).
 Plugin 'tomtom/tcomment_vim'		" Toggle line-/block-wise comments.
 
-"-- vim-scripts.org repos --
-Plugin 'python_match.vim'			" Use '%' to jump between Python if/elif/else, try/except/catch, etc.
+"-- vim.org/scripts repos --
+"Example:	Plugin 'python_match.vim'
 
 "-- non-github repos --
 "Example:	Plugin 'git://git.wincent.com/command-t.git'
