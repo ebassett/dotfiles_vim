@@ -23,6 +23,7 @@ Plugin 'gioele/vim-autoswap'		" Deal more intelligently with .swp files.
 Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc. :help easymotion
 "Plugin 'tpope/vim-fugitive'		" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
 Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/XML tags, if/else-if/else, etc.
+Plugin 'techlivezheng/vim-plugin-minibufexpl'  " Tabline for open buffers.
 Plugin 'vim-scripts/MultipleSearch'	" Highlight multiple search terms in different colours. :help MultipleSearch
 Plugin 'scrooloose/nerdtree'		" File explorer. (:help nerdtree) I have :NERDTreeToggle mapped to <F2>
 Plugin 'tpope/vim-ragtag'			" Convenience for XML/HTML tags.
