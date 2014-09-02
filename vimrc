@@ -148,7 +148,7 @@ endif
 if has('win32') || has('win64')		" I'm not sure I need these settings; they're not that compelling.
 	source $VIMRUNTIME/mswin.vim	" Just remaps CTRL-C/V/X/Z, I think.
 	behave mswin					" Just changes some mouse-selection settings.
-	set guifont=Consolas:h10		" Looks better than the default.
+	set guifont=Consolas:h10,Lucida_Console:h10	" First choice, fallback.
 endif
 
 
