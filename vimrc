@@ -70,6 +70,7 @@ set linebreak			" Soft-wrap at word boundaries rather than right at the end of t
 set formatoptions+=rjl	" r = prefix comment character on Enter from a comment line;
 						" j = drop second comment marker when joining two comment lines;
 						" l = don't hard-wrap long lines.
+set nrformats-=octal	" With CTRL-A/X inc-/decrementing, don't treat leading zero as octal.
 set pastetoggle=<F3>	" Allow pasting from system clipboard into terminal vim without messing up indents.
 						" See also the <F3> keymapping below.
 
