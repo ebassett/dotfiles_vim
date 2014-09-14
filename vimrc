@@ -254,6 +254,12 @@ augroup BIOLOG
 	autocmd BufRead,BufNewFile biolog.txt syn match Todo "\<\(TODO\|EJB\)"
 augroup END
 
+" Work: *.config files are XML
+augroup CONFIG
+	autocmd! CONFIG
+	autocmd BufRead,BufNewFile *.config set filetype=xml
+augroup END
+
 " Type detection for JSON files.
 augroup JSON
 	autocmd! JSON
@@ -264,7 +270,7 @@ augroup END
 augroup PYTHON
 	autocmd! PYTHON
 	" Use 4 spaces for indentation and latin1 as encoding.
-	autocmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=4 enc=latin1
+	autocmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=4 encoding=latin1
 	" And work's python coding convention: spaces instead of tabs.
 	autocmd FileType python setlocal expandtab
 augroup END
