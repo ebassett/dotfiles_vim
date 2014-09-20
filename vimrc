@@ -153,7 +153,7 @@ if has('win32') || has('win64')		" I'm not sure I need these settings; they're n
 endif
 
 
-"===== FILES: tmp, backup, undo ========
+"===== FILES: tmp, backup, undo, viminfo ========
 set writebackup				" Write a backup when saving a file...
 set nobackup				" ...but delete the backup upon successful completion of the save.
 set backupdir=$HOME/.vim/_backup
@@ -161,6 +161,7 @@ set backup
 set directory=$HOME/.vim/_tmp
 set undofile
 set undodir=$HOME/.vim/_undo
+set viminfo+=n$HOME/.vim/viminfo	" Platform-independent name&location, not .viminfo vs _viminfo
 
 
 "===== KEY-MAPPINGS ====================
