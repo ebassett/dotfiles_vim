@@ -252,17 +252,17 @@ command! -nargs=* Vimgrep  let s:eikeep=&ei|set ei=all|vimgrep <args>|let &ei=s:
 
 "===== AUTOCOMMANDS ====================
 
-" Work: biolog-specific settings: never tabs, always spaces, tab=2 spaces.
-augroup BIOLOG
-	autocmd! BIOLOG
-	autocmd BufRead,BufNewFile  biolog.txt  set expandtab shiftwidth=2 softtabstop=2 tabstop=2
-	autocmd BufRead,BufNewFile  biolog.txt  syn match Todo "\<\(TODO\|EJB\)"
-augroup END
-
 " Work: *.config files are XML
 augroup CONFIG
 	autocmd! CONFIG
 	autocmd BufRead,BufNewFile  *.config  set filetype=xml
+augroup END
+
+" EJB: Settings for my notes to myself: never tabs, always spaces, tab=2 spaces.
+augroup EJB
+	autocmd! EJB
+	autocmd BufRead,BufNewFile  biolog.txt,Captain's.log  set expandtab shiftwidth=2 softtabstop=2 tabstop=2
+	autocmd BufRead,BufNewFile  biolog.txt,Captain's.log  syn match Todo "\<\(TODO\|EJB\)"
 augroup END
 
 augroup HELP_IN_TABS
