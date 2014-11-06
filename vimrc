@@ -273,7 +273,7 @@ augroup END
 " Type detection for JSON files.
 augroup JSON
 	autocmd! JSON
-	autocmd BufRead,BufNewFile  *.json  set filetype=json
+	autocmd BufRead,BufNewFile  *.json  set filetype=javascript
 augroup END
 
 " Python as per PEP 8 (http://www.python.org/dev/peps/pep-0008/).
