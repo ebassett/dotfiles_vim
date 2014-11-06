@@ -96,6 +96,7 @@ set backspace=indent,eol,start
 set nostartofline		" Don't always move cursor to beginning of line; leave it in the column I was on.
 set scrolloff=3			" Minimum number of screen lines to keep above and below the cursor.
 set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEFT>, <RIGHT>, ~.
+set matchpairs+=<:>		" Make % jump between these pairs of characters.
 
 "_____Searching_____
 set ignorecase			" Necessary for smartcase to work.
@@ -254,44 +255,61 @@ command! -nargs=* Vimgrep  let s:eikeep=&ei|set ei=all|vimgrep <args>|let &ei=s:
 " Work: biolog-specific settings: never tabs, always spaces, tab=2 spaces.
 augroup BIOLOG
 	autocmd! BIOLOG
-	autocmd BufRead,BufNewFile biolog.txt set expandtab shiftwidth=2 softtabstop=2 tabstop=2
-	autocmd BufRead,BufNewFile biolog.txt syn match Todo "\<\(TODO\|EJB\)"
+	autocmd BufRead,BufNewFile  biolog.txt  set expandtab shiftwidth=2 softtabstop=2 tabstop=2
+	autocmd BufRead,BufNewFile  biolog.txt  syn match Todo "\<\(TODO\|EJB\)"
 augroup END
 
 " Work: *.config files are XML
 augroup CONFIG
 	autocmd! CONFIG
-	autocmd BufRead,BufNewFile *.config set filetype=xml
+	autocmd BufRead,BufNewFile  *.config  set filetype=xml
+augroup END
+
+augroup HELP_IN_TABS
+	autocmd! HELP_IN_TABS
+	autocmd BufEnter  *.txt  call HelpInNewTab()
 augroup END
 
 " Type detection for JSON files.
 augroup JSON
 	autocmd! JSON
-	autocmd BufRead,BufNewFile *.json set filetype=json
+	autocmd BufRead,BufNewFile  *.json  set filetype=json
 augroup END
 
 " Python as per PEP 8 (http://www.python.org/dev/peps/pep-0008/).
 augroup PYTHON
 	autocmd! PYTHON
 	" Use 4 spaces for indentation and latin1 as encoding.
-	autocmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=4 encoding=latin1
+	autocmd FileType  python  setlocal shiftwidth=4 softtabstop=4 tabstop=4 encoding=latin1
 	" And work's python coding convention: spaces instead of tabs.
-	autocmd FileType python setlocal expandtab
+	autocmd FileType  python  setlocal expandtab
 augroup END
 
 augroup VIMRC
 	autocmd! VIMRC
-	autocmd BufWritePost $MYVIMRC source %  " Automatically reload .vimrc (this file) when saving it.
-	autocmd BufWritePost $MYVIMRC AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
+	autocmd BufWritePost  $MYVIMRC  source %  " Automatically reload .vimrc (this file) when saving it.
+	autocmd BufWritePost  $MYVIMRC  AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
 augroup END
 
 " Pretty-print (indent) XML with eg. gg=G - Requires xmllint in $PATH
 augroup XML_INDENT
 	autocmd! XML_INDENT
-	autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+	autocmd FileType  xml  setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 augroup END
 
 "===== FUNCTIONS =======================
+" Open help files in new tabs. cf. HELP_IN_TABS augroup
+function! HelpInNewTab()
+	if &buftype == 'help'
+		execute "normal \<C-W>T"
+	endif
+endfunction
+
+" Sort characters as characters, numbers as numbers
+function! g:NaturalSort(i, j)
+	return (a:i+0) - (a:j+0)
+endfunction
+
 " Toggle between absolute, relative, and no line-numbering. I have this mapped to <Leader>num
 function! g:ToggleNumberMode()
 	if(&number == 1)
@@ -302,11 +320,8 @@ function! g:ToggleNumberMode()
 	else
 		set number
 	endif
-endfunc
+endfunction
 
-function! g:NaturalSort(i, j)
-	return (a:i+0) - (a:j+0)
-endfunc
 
 "===== PLUGIN SETTINGS =================
 "_____vim-airline_____
@@ -319,6 +334,7 @@ let g:startify_skiplist = [
 		\ 'COMMIT_EDITMSG',
 		\ '^/usr/share/vim/vim7./doc/.*',
 		\ ]
+
 
 "===== ABBREVIATIONS ===================
 "_____Spelling corrections_____
