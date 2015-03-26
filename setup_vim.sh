@@ -17,5 +17,5 @@ git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle
 
 ln -sf $HOME/.vim/vimrc $HOME/.vimrc
 
-vim +BundleInstall
+vim +PluginInstall
 

@@ -14,5 +14,5 @@ mklink %USERPROFILE%\_vimrc %USERPROFILE%\.vim\vimrc
 REM Not strictly necessary, but I like it.
 mklink %USERPROFILE%\.vimrc %USERPROFILE%\.vim\vimrc
 
-gvim +BundleInstall
+gvim +PluginInstall
 

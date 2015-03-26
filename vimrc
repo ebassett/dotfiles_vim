@@ -1,5 +1,5 @@
 ﻿scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
-set encoding=utf8
+set encoding=utf-8
 set nocompatible		" Put this first in vimrc (because it affects many other settings).
 
 "===== VUNDLE ==========================
@@ -264,6 +264,8 @@ augroup EJB
 	autocmd! EJB
 	autocmd BufRead,BufNewFile  biolog.txt,Captain's.log  set expandtab shiftwidth=2 softtabstop=2 tabstop=2
 	autocmd BufRead,BufNewFile  biolog.txt,Captain's.log  syn match Todo "\<\(TODO\|EJB\)"
+	" Scroll to end of file on opening.
+	autocmd BufRead             biolog.txt,Captain's.log  :normal G
 augroup END
 
 augroup HELP_IN_TABS
@@ -307,6 +309,7 @@ function! HelpInNewTab()
 endfunction
 
 " Sort characters as characters, numbers as numbers
+" Usage: let sortedlist = sort(mylist, "NaturalSort")
 function! g:NaturalSort(i, j)
 	return (a:i+0) - (a:j+0)
 endfunction
@@ -329,7 +332,7 @@ endfunction
 "let g:airline#extensions#tabline#enabled = 1
 
 "_____vim-startify_____
-let g:startify_bookmarks = [ $HOME.'/.vimrc' ]
+let g:startify_bookmarks = [ $HOME.'/.vimrc', $HOME."/CaptainsLog/Captain's.log" ]
 let g:startify_skiplist = [
 		\ '^/tmp',
 		\ 'COMMIT_EDITMSG',
