@@ -17,10 +17,13 @@ call vundle#begin()
 Plugin 'gmarik/vundle' " Let Vundle manage Vundle. Required.
 
 "-- original github repos --
+Plugin 'tpope/vim-abolish'			" Easily search for, substitute, and abbreviate multiple variants of a word.
 Plugin 'bling/vim-airline'			" Powerful yet light statusline. :help airline for config options.
-Plugin 'vim-scripts/AutoClose'		" Auto-closes (, [, {, \", '.
+"Plugin 'vim-scripts/AutoClose'		" Auto-closes (, [, {, \", '.
+Plugin 'ebassett/AutoClose'		" Auto-closes (, [, {, \", '.
 Plugin 'gioele/vim-autoswap'		" Deal more intelligently with .swp files.
 Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc. :help easymotion
+Plugin 'tpope/vim-eunuch'			" Vim sugar for some Unix shell commands, eg. :Rename, :SudoWrite.
 "Plugin 'tpope/vim-fugitive'		" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
 Plugin 'gergap/vim-konsole'			" KDE helper for autoswap
 Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/XML tags, if/else-if/else, etc.
@@ -37,6 +40,8 @@ Plugin 'mhinz/vim-startify'			" Startup screen with recently-used files, session
 Plugin 'tpope/vim-surround'			" Wrap existing text in quotes, brackets, tags, etc.
 Plugin 'majutsushi/tagbar'			" Sidebar for coding symbols (ctags).
 Plugin 'tomtom/tcomment_vim'		" Toggle line-/block-wise comments.
+Plugin 'tpope/vim-unimpaired'		" Short normal-mode aliases for commonly-used ex commands.
+Plugin 'vimwiki/vimwiki'			" Personal wiki.
 
 "-- vim.org/scripts repos --
 "Example:	Plugin 'python_match.vim'
@@ -53,6 +58,7 @@ filetype plugin indent on  " Required. Equivalent to 'filetype on' AND 'filetype
 
 "===== GENERAL =========================
 syntax on				" I believe this has to occur early in the vimrc.
+set fileformats+=mac	" Might as well add this. (Defaults: unix,dos under unix; dos,unix under Windows.)
 
 "_____Tabbing and Indenting_____
 set tabstop=4			" Tab Stops of four spaces (default was eight).
@@ -86,7 +92,7 @@ set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
 "set list				" Display non-printing characters (according to listchars).
-set listchars=tab:»-,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Characters for non-printing chars (if 'list' is set).
+set listchars=tab:»—,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Chars for non-printing chars (if 'list' is set).
 set showbreak=\|		" String to indicate soft-wrapped lines.
 set noerrorbells		" Suppress audible bell.
 set novisualbell		" Suppress visual bell. cf. t_vb
@@ -96,6 +102,7 @@ set history=100			" Remember last n commands/searchs/etc.
 set backspace=indent,eol,start
 set nostartofline		" Don't always move cursor to beginning of line; leave it in the column I was on.
 set scrolloff=3			" Minimum number of screen lines to keep above and below the cursor.
+set sidescrolloff=5		" Minimum number of characters to keep when scrolling long lines.
 set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEFT>, <RIGHT>, ~.
 set matchpairs+=<:>		" Make % jump between these pairs of characters.
 
@@ -114,6 +121,8 @@ set mouse=a				"Allow mouse in all modes.
 
 "_____Buffers_____
 set hidden				" Do NOT require a buffer to be saved before switching to a different one.
+set splitbelow
+set splitright
 
 "_____Spelling_____
 set spelllang=en_ca
@@ -135,7 +144,7 @@ if has('gui_running')
 		set guicursor+=i-ci:ver50-Cursor/lCursor	" Make the insert cursor wider than the default.
 else " Running in terminal
 		set background=dark	" Background is dark so highlight syntax with light colours.
-		set t_Co=16			" Number of colours that the terminal supports. This looks nice on mine...
+		set t_Co=256		" Number of colours that the terminal supports. This looks nice on mine...
 		" Don't use underline to hightlight current line in terminal; use a background colour.
 		if &cursorline
 			highlight CursorLine   cterm=NONE ctermbg=DarkGrey
@@ -156,28 +165,29 @@ endif
 
 
 "===== FILES: tmp, backup, undo, viminfo ========
+" Trailing double-slash prods Vim to keep full path, to avoid collisions.
+set backupdir=$HOME/.vim/_backup//
 set writebackup				" Write a backup when saving a file...
 set nobackup				" ...but delete the backup upon successful completion of the save.
-set backupdir=$HOME/.vim/_backup
-set backup
-set directory=$HOME/.vim/_tmp
+set directory=$HOME/.vim/_tmp//
 set undofile
-set undodir=$HOME/.vim/_undo
+set undodir=$HOME/.vim/_undo//
 set viminfo+=n$HOME/.vim/viminfo	" Platform-independent name&location, not .viminfo vs _viminfo
 
 
 "===== KEY-MAPPINGS ====================
 "_____Text manipulation_____
 " Interact with system clipboard.
-noremap <Leader>y "+y
+noremap <Leader>y  "+y
 noremap <Leader>yy "+yy
-noremap <Leader>Y "+y$
-noremap <Leader>p "+p
-noremap <Leader>P "+P
-" Make shift-insert work like in Xterm.
+noremap <Leader>y$ "+y$
+noremap <Leader>Y  "+y$
+noremap <Leader>p  "+p
+noremap <Leader>P  "+P
+" Make shift-insert work like in xterm. (Uses '*' register.)
 noremap  <S-Insert> <MiddleMouse>
 noremap! <S-Insert> <MiddleMouse>
-" Y yanks to end of line (analogous to D for delete).
+" Y yanks to end of line (analogous to D for delete, C for change).
 nnoremap Y y$
 " Delete to the black-hole register.
 nnoremap <Leader>d "_d
@@ -197,8 +207,20 @@ nnoremap <Leader>O O<ESC>
 " Toggle paste mode to paste properly indented text in the terminal. Not needed for gvim.
 " This echoes the paste mode to the status line as well. See also 'set togglepaste' above.
 nnoremap <silent> <F3> :set invpaste paste?<CR>
-" Insert date.
+" Insert short/long date (ie. write it to clipboard and then paste that in).
 nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>p
+nnoremap <Leader>DATE "=strftime("%A %d %B %Y %H:%M:%S")<CR>p
+" No-op keys that cause more trouble than they're worth when hit accidentally.
+"   Normally starts ex mode
+nnoremap Q <nop>
+"   Normally opens man page for word under cursor
+nnoremap K <nop>
+" Tab in normal mode does nothing; make it switch to insert mode, tab, return to normal mode. BREAKS CTRL-I navigation
+"nnoremap <TAB> i<TAB><ESC>l
+" Space in normal mode does nothing useful; make it switch to insert mode, space, return to normal mode.
+"nnoremap <SPACE> i<SPACE><ESC>l
+" Backspace in normal mode does nothing useful; make it switch to insert mode, backspace, return to normal mode.
+"nnoremap <BS> i<BS><ESC>l
 
 "_____Extra-textual info/visibility_____
 " Use 'kj' to get out of insert mode into normal mode.
@@ -210,16 +232,18 @@ vnoremap : ;
 vnoremap ; :
 " Toggle absolute/relative line-numbering
 nnoremap <Leader>num :call g:ToggleNumberMode()<CR>
-noremap <C-V> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
-noremap <Leader>l :set list!<CR>
+"noremap <C-v> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
+noremap <Leader>l :setlocal list!<CR>
 noremap <F2> :execute 'NERDTreeToggle ' . getcwd()<CR>
 nnoremap <Leader>R :RainbowParenthesesToggle<CR>
 noremap <F8> :execute 'TagbarToggle'<CR>
 
 "_____Movement_____
-" Make jk work screen-line-wise.
+" Swap line-wise vs row-wise behaviour of {j|k} and g{j|k}
 nnoremap j gj
 nnoremap k gk
+nnoremap gj j
+nnoremap gk k
 " Make arrow keys work (screen-line-wise) in visual mode.
 vnoremap <Left> h
 vnoremap <Right> l
@@ -242,14 +266,21 @@ nnoremap :g// :g//
 nnoremap <Leader>/ :nohlsearch \| :Search \| :SearchReset<CR>
 
 "===== COMMAND ALIASES =================
-" These typo fixes are fine but note that any arguments will not get passed through.
-command! W w
-command! WQ wq
-command! Wq wq
-command! Q q
+" See http://blog.sanctum.geek.nz/vim-command-typos
+command! -bang -nargs=? -complete=file E e<bang> <args>
+command! -bang -nargs=? -complete=file W w<bang> <args>
+command! -bang -nargs=? -complete=file Wq wq<bang> <args>
+command! -bang -nargs=? -complete=file WQ wq<bang> <args>
+command! -bang Wa wa<bang>
+command! -bang WA wa<bang>
+command! -bang Q q<bang>
+command! -bang QA qa<bang>
+command! -bang Qa qa<bang>
 " Speed up vimgrep (ignore Autocommand events when opening files for grepping)
 "   'ei' => 'eventignore'
-command! -nargs=* Vimgrep  let s:eikeep=&ei|set ei=all|vimgrep <args>|let &ei=s:eikeep|unlet s:eikeep
+command! -nargs=* Vimgrep  let s:eikeep=&ei|set ei=all|vimgrep <args>|      let &ei=s:eikeep|unlet s:eikeep
+command! -nargs=* VMS      let s:eikeep=&ei|set ei=all|VimwikiSearch <args>|let &ei=s:eikeep|unlet s:eikeep
+
 
 "===== AUTOCOMMANDS ====================
 
@@ -262,10 +293,12 @@ augroup END
 " EJB: Settings for my notes to myself: never tabs, always spaces, tab=2 spaces.
 augroup EJB
 	autocmd! EJB
-	autocmd BufRead,BufNewFile  biolog.txt,Captain's.log  set expandtab shiftwidth=2 softtabstop=2 tabstop=2
-	autocmd BufRead,BufNewFile  biolog.txt,Captain's.log  syn match Todo "\<\(TODO\|EJB\)"
-	" Scroll to end of file on opening.
-	autocmd BufRead             biolog.txt,Captain's.log  :normal G
+	autocmd BufRead,BufNewFile  Captains.log,Captain's.log,*.wiki setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
+	autocmd BufRead,BufNewFile  Captains.log,Captain's.log,*.wiki syn match Todo "\<\(TODO\|EJB\)"
+	autocmd BufRead,BufNewFile  Captains.log,Captain's.log,*.wiki setlocal commentstring=//\ %s
+	" Scroll to end of file on opening, then find the last non-blank line.
+	autocmd BufRead             Captains.log,Captain's.log,*.wiki :normal! G{}
+	autocmd BufRead             Captains.log,Captain's.log,*.wiki let g:autoclose_openspecial = 0
 augroup END
 
 augroup HELP_IN_TABS
@@ -331,13 +364,62 @@ endfunction
 "_____vim-airline_____
 "let g:airline#extensions#tabline#enabled = 1
 
+"_____AutoClose_____
+"let g:autoclose_special_curlybrace = 0
+
 "_____vim-startify_____
-let g:startify_bookmarks = [ $HOME.'/.vimrc', $HOME."/CaptainsLog/Captain's.log" ]
+let g:startify_bookmarks = [
+		\ $HOME."/.vimrc",
+		\ $HOME."/.bashrc",
+		\ $HOME."/CaptainsLog/Captain's.log",
+		\ $HOME."/vimwiki/index.wiki",
+        \ ]
 let g:startify_skiplist = [
 		\ '^/tmp',
 		\ 'COMMIT_EDITMSG',
 		\ '^/usr/share/vim/vim7./doc/.*',
 		\ ]
+
+"_____vimwiki_____
+let wiki = {}
+let wiki.path = '~/vimwiki/'
+let wiki.nested_syntaxes = {
+        \ 'awk': 'awk',
+        \ 'bat': 'dosbatch',
+        \ 'batch': 'dosbatch',
+        \ 'c#': 'cs',
+        \ 'c++': 'cpp',
+        \ 'c-sharp': 'cs',
+        \ 'crontab': 'crontab',
+        \ 'c': 'c',
+        \ 'cpp': 'cpp',
+        \ 'cs': 'cs',
+        \ 'csharp': 'cs',
+        \ 'fstab': 'fstab',
+        \ 'html': 'html',
+        \ 'ini': 'dosini',
+        \ 'java': 'java',
+        \ 'json': 'json',
+        \ 'make': 'make',
+        \ 'man': 'man',
+        \ 'markdown': 'markdown',
+        \ 'perl': 'perl',
+        \ 'python': 'python',
+        \ 'registry': 'registry',
+        \ 'ruby': 'ruby',
+        \ 'samba': 'samba',
+        \ 'scheme': 'scheme',
+        \ 'sed': 'sed',
+        \ 'sh': 'sh',
+        \ 'sql': 'sql',
+        \ 'sudoers': 'sudoers',
+        \ 'sysctl': 'sysctl',
+        \ 'wget': 'wget',
+        \ 'xf86conf': 'xf86conf',
+        \ 'xhtml': 'xhtml',
+        \ 'xml': 'xml',
+        \ }
+let g:vimwiki_list = [wiki]
 
 
 "===== ABBREVIATIONS ===================
@@ -349,5 +431,7 @@ iabbr mabye maybe
 iabbr prelfight preflight
 iabbr taht that
 iabbr teh the
+iabbr varaible variable
+iabbr varaibles variables
 iabbr verison version
 
