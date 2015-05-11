@@ -371,6 +371,7 @@ endfunction
 let g:startify_bookmarks = [
 		\ $HOME."/.vimrc",
 		\ $HOME."/.bashrc",
+		\ $HOME."/.bash_aliases",
 		\ $HOME."/CaptainsLog/Captain's.log",
 		\ $HOME."/vimwiki/index.wiki",
         \ ]
