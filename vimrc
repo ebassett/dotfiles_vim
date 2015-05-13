@@ -282,8 +282,7 @@ command! -bang QA qa<bang>
 command! -bang Qa qa<bang>
 " Speed up vimgrep (ignore Autocommand events when opening files for grepping)
 "   'ei' => 'eventignore'
-command! -nargs=* Vimgrep  let s:eikeep=&ei|set ei=all|vimgrep <args>|      let &ei=s:eikeep|unlet s:eikeep
-"command! -nargs=* VWS      let s:eikeep=&ei|set ei=all|VimwikiSearch <args>|let &ei=s:eikeep|unlet s:eikeep
+command! -nargs=* Vimgrep  noautocmd vimgrep <args>
 
 
 "===== AUTOCOMMANDS ====================
