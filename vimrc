@@ -41,7 +41,7 @@ Plugin 'tpope/vim-surround'			" Wrap existing text in quotes, brackets, tags, et
 Plugin 'majutsushi/tagbar'			" Sidebar for coding symbols (ctags).
 Plugin 'tomtom/tcomment_vim'		" Toggle line-/block-wise comments.
 Plugin 'tpope/vim-unimpaired'		" Short normal-mode aliases for commonly-used ex commands.
-Plugin 'vimwiki/vimwiki'			" Personal wiki.
+Plugin 'ebassett/vimwiki'			" Personal wiki.
 
 "-- vim.org/scripts repos --
 "Example:	Plugin 'python_match.vim'
@@ -92,7 +92,7 @@ set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
 "set list				" Display non-printing characters (according to listchars).
-set listchars=tab:»—,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Chars for non-printing chars (if 'list' is set).
+set listchars=tab:▸—,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Chars for non-printing chars (if 'list' is set).
 set showbreak=\|		" String to indicate soft-wrapped lines.
 set noerrorbells		" Suppress audible bell.
 set novisualbell		" Suppress visual bell. cf. t_vb
@@ -107,6 +107,7 @@ set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEF
 set matchpairs+=<:>		" Make % jump between these pairs of characters.
 
 "_____Searching_____
+set gdefault			" Default is substitutions globally on lines (g option). Add explicit g to reverse.
 set ignorecase			" Necessary for smartcase to work.
 set smartcase			" Case-sensitive if any capitals in search term, else insensitive. '\c' forces insensitive; '\C' force sensitive.
 set incsearch			" Incremental search: start matching as soon as you start typing search term.
@@ -114,7 +115,8 @@ set hlsearch			" Highlight search matches.
 set nowrapscan			" Do NOT continue search from top when you reach the bottom.
 set wildmenu			" Autocompletion stuff.
 set wildmode=longest,list,full
-set wildignore=*~,*.bak,*.class,*.pyc,*.sw?
+set wildignore+=.git
+set wildignore+=*~,*.bak,*.class,*.pyc,*.sw?
 
 "_____Mousing_____
 set mouse=a				"Allow mouse in all modes.
@@ -263,7 +265,9 @@ cnoremap >s# >smagic#
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
 " Clear search highlights, including from :Search (MultipleSearch plugin)
-nnoremap <Leader>/ :nohlsearch \| :Search \| :SearchReset<CR>
+nnoremap <Leader><Space> :nohlsearch \| :Search \| :SearchReset<CR>
+"Shortcut for :VWS (VimWikiSearch)
+nnoremap <Leader>? :VWS ##<Left>
 
 "===== COMMAND ALIASES =================
 " See http://blog.sanctum.geek.nz/vim-command-typos
@@ -279,7 +283,7 @@ command! -bang Qa qa<bang>
 " Speed up vimgrep (ignore Autocommand events when opening files for grepping)
 "   'ei' => 'eventignore'
 command! -nargs=* Vimgrep  let s:eikeep=&ei|set ei=all|vimgrep <args>|      let &ei=s:eikeep|unlet s:eikeep
-command! -nargs=* VMS      let s:eikeep=&ei|set ei=all|VimwikiSearch <args>|let &ei=s:eikeep|unlet s:eikeep
+"command! -nargs=* VWS      let s:eikeep=&ei|set ei=all|VimwikiSearch <args>|let &ei=s:eikeep|unlet s:eikeep
 
 
 "===== AUTOCOMMANDS ====================
@@ -382,6 +386,7 @@ let g:startify_skiplist = [
 		\ ]
 
 "_____vimwiki_____
+let g:vimwiki_use_mouse = 1
 let wiki = {}
 let wiki.path = '~/vimwiki/'
 let wiki.nested_syntaxes = {
