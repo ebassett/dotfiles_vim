@@ -374,12 +374,13 @@ let g:startify_bookmarks = [
 		\ $HOME."/.vimrc",
 		\ $HOME."/.bashrc",
 		\ $HOME."/.bash_aliases",
-		\ $HOME."/CaptainsLog/Captain's.log",
 		\ $HOME."/vimwiki/index.wiki",
+		\ $HOME."/CaptainsLog/Captain's.log",
         \ ]
 let g:startify_skiplist = [
 		\ '^/tmp',
 		\ 'COMMIT_EDITMSG',
+		\ $HOME.'/vimwiki/.*\.wiki',
 		\ '^/usr/share/vim/vim7./doc/.*',
 		\ ]
 
