@@ -20,10 +20,11 @@ Plugin 'gmarik/vundle' " Let Vundle manage Vundle. Required.
 Plugin 'tpope/vim-abolish'			" Easily search for, substitute, and abbreviate multiple variants of a word.
 Plugin 'bling/vim-airline'			" Powerful yet light statusline. :help airline for config options.
 "Plugin 'vim-scripts/AutoClose'		" Auto-closes (, [, {, \", '.
-Plugin 'ebassett/AutoClose'		" Auto-closes (, [, {, \", '.
+Plugin 'ebassett/AutoClose'			" Auto-closes (, [, {, \", '.
 Plugin 'gioele/vim-autoswap'		" Deal more intelligently with .swp files.
 Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc. :help easymotion
 Plugin 'tpope/vim-eunuch'			" Vim sugar for some Unix shell commands, eg. :Rename, :SudoWrite.
+Plugin 'terryma/vim-expand-region'	" See expand_region mapping below
 "Plugin 'tpope/vim-fugitive'		" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
 Plugin 'gergap/vim-konsole'			" KDE helper for autoswap
 Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/XML tags, if/else-if/else, etc.
@@ -92,7 +93,7 @@ set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
 "set list				" Display non-printing characters (according to listchars).
-set listchars=tab:▸—,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Chars for non-printing chars (if 'list' is set).
+set listchars=tab:»-,trail:·,eol:¶,extends:×,precedes:÷,nbsp:°  " Chars for non-printing chars (if 'list' is set).
 set showbreak=\|		" String to indicate soft-wrapped lines.
 set noerrorbells		" Suppress audible bell.
 set novisualbell		" Suppress visual bell. cf. t_vb
@@ -223,6 +224,15 @@ nnoremap K <nop>
 "nnoremap <SPACE> i<SPACE><ESC>l
 " Backspace in normal mode does nothing useful; make it switch to insert mode, backspace, return to normal mode.
 "nnoremap <BS> i<BS><ESC>l
+" Jump to end of pasted text
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
+" Quickly select text you just pasted
+noremap gV `[v`]
+" Use expand-region plugin; repeatedly hitting 'v' expands scope of selection; CTRL-v shrinks it
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
 
 "_____Extra-textual info/visibility_____
 " Use 'kj' to get out of insert mode into normal mode.
@@ -352,8 +362,8 @@ endfunction
 " Toggle between absolute, relative, and no line-numbering. I have this mapped to <Leader>num
 function! g:ToggleNumberMode()
 	if(&number == 1)
-		set relativenumber
 		set nonumber
+		set relativenumber
 	elseif(&relativenumber == 1)
 		set norelativenumber
 	else
@@ -386,8 +396,11 @@ let g:startify_skiplist = [
 
 "_____vimwiki_____
 let g:vimwiki_use_mouse = 1
+" Don't shorten URLs
+let g:vimwiki_url_maxsave = 0
 let wiki = {}
 let wiki.path = '~/vimwiki/'
+" See /usr/share/vim/vim74/syntax/ for available syntaxes
 let wiki.nested_syntaxes = {
         \ 'awk': 'awk',
         \ 'bat': 'dosbatch',
@@ -404,6 +417,7 @@ let wiki.nested_syntaxes = {
         \ 'html': 'html',
         \ 'ini': 'dosini',
         \ 'java': 'java',
+        \ 'javascript': 'javascript',
         \ 'json': 'json',
         \ 'make': 'make',
         \ 'man': 'man',
