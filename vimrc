@@ -1,4 +1,4 @@
-﻿scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
+scriptencoding utf-8	" See http://superuser.com/questions/556915 and elsewhere.
 set encoding=utf-8
 set nocompatible		" Put this first in vimrc (because it affects many other settings).
 
@@ -24,9 +24,9 @@ Plugin 'ebassett/AutoClose'			" Auto-closes (, [, {, \", '.
 Plugin 'gioele/vim-autoswap'		" Deal more intelligently with .swp files.
 Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc. :help easymotion
 Plugin 'tpope/vim-eunuch'			" Vim sugar for some Unix shell commands, eg. :Rename, :SudoWrite.
-Plugin 'terryma/vim-expand-region'	" See expand_region mapping below
+Plugin 'terryma/vim-expand-region'	" See expand_region mapping below.
 "Plugin 'tpope/vim-fugitive'		" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
-Plugin 'gergap/vim-konsole'			" KDE helper for autoswap
+Plugin 'gergap/vim-konsole'			" KDE helper for autoswap.
 Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/XML tags, if/else-if/else, etc.
 Plugin 'techlivezheng/vim-plugin-minibufexpl'  " Tabline for open buffers.
 Plugin 'vim-scripts/MultipleSearch'	" Highlight multiple search terms in different colours. :help MultipleSearch
@@ -108,7 +108,7 @@ set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEF
 set matchpairs+=<:>		" Make % jump between these pairs of characters.
 
 "_____Searching_____
-set gdefault			" Default is substitutions globally on lines (g option). Add explicit g to reverse.
+set gdefault			" Default to substituting globally on lines (g option). Add explicit g to reverse.
 set ignorecase			" Necessary for smartcase to work.
 set smartcase			" Case-sensitive if any capitals in search term, else insensitive. '\c' forces insensitive; '\C' force sensitive.
 set incsearch			" Incremental search: start matching as soon as you start typing search term.
@@ -116,7 +116,7 @@ set hlsearch			" Highlight search matches.
 set nowrapscan			" Do NOT continue search from top when you reach the bottom.
 set wildmenu			" Autocompletion stuff.
 set wildmode=longest,list,full
-set wildignore+=.git
+set wildignore+=.git/**
 set wildignore+=*~,*.bak,*.class,*.pyc,*.sw?
 
 "_____Mousing_____
@@ -380,13 +380,14 @@ endfunction
 "let g:autoclose_special_curlybrace = 0
 
 "_____vim-startify_____
+let g:startify_custom_header = []
 let g:startify_bookmarks = [
 		\ $HOME."/.vimrc",
 		\ $HOME."/.bashrc",
 		\ $HOME."/.bash_aliases",
 		\ $HOME."/vimwiki/index.wiki",
 		\ $HOME."/CaptainsLog/Captain's.log",
-        \ ]
+		\ ]
 let g:startify_skiplist = [
 		\ '^/tmp',
 		\ 'COMMIT_EDITMSG',
@@ -402,42 +403,44 @@ let wiki = {}
 let wiki.path = '~/vimwiki/'
 " See /usr/share/vim/vim74/syntax/ for available syntaxes
 let wiki.nested_syntaxes = {
-        \ 'awk': 'awk',
-        \ 'bat': 'dosbatch',
-        \ 'batch': 'dosbatch',
-        \ 'c#': 'cs',
-        \ 'c++': 'cpp',
-        \ 'c-sharp': 'cs',
-        \ 'crontab': 'crontab',
-        \ 'c': 'c',
-        \ 'cpp': 'cpp',
-        \ 'cs': 'cs',
-        \ 'csharp': 'cs',
-        \ 'fstab': 'fstab',
-        \ 'html': 'html',
-        \ 'ini': 'dosini',
-        \ 'java': 'java',
-        \ 'javascript': 'javascript',
-        \ 'json': 'json',
-        \ 'make': 'make',
-        \ 'man': 'man',
-        \ 'markdown': 'markdown',
-        \ 'perl': 'perl',
-        \ 'python': 'python',
-        \ 'registry': 'registry',
-        \ 'ruby': 'ruby',
-        \ 'samba': 'samba',
-        \ 'scheme': 'scheme',
-        \ 'sed': 'sed',
-        \ 'sh': 'sh',
-        \ 'sql': 'sql',
-        \ 'sudoers': 'sudoers',
-        \ 'sysctl': 'sysctl',
-        \ 'wget': 'wget',
-        \ 'xf86conf': 'xf86conf',
-        \ 'xhtml': 'xhtml',
-        \ 'xml': 'xml',
-        \ }
+		\ 'awk': 'awk',
+		\ 'bash': 'sh',
+		\ 'bat': 'dosbatch',
+		\ 'batch': 'dosbatch',
+		\ 'c#': 'cs',
+		\ 'c': 'c',
+		\ 'c++': 'cpp',
+		\ 'c-sharp': 'cs',
+		\ 'cpp': 'cpp',
+		\ 'crontab': 'crontab',
+		\ 'cs': 'cs',
+		\ 'csharp': 'cs',
+		\ 'fstab': 'fstab',
+		\ 'html': 'html',
+		\ 'ini': 'dosini',
+		\ 'java': 'java',
+		\ 'javascript': 'javascript',
+		\ 'json': 'json',
+		\ 'make': 'make',
+		\ 'man': 'man',
+		\ 'markdown': 'markdown',
+		\ 'perl': 'perl',
+		\ 'python': 'python',
+		\ 'registry': 'registry',
+		\ 'ruby': 'ruby',
+		\ 'samba': 'samba',
+		\ 'scheme': 'scheme',
+		\ 'sed': 'sed',
+		\ 'sh': 'sh',
+		\ 'shell': 'sh',
+		\ 'sql': 'sql',
+		\ 'sudoers': 'sudoers',
+		\ 'sysctl': 'sysctl',
+		\ 'wget': 'wget',
+		\ 'xf86conf': 'xf86conf',
+		\ 'xhtml': 'xhtml',
+		\ 'xml': 'xml',
+		\ }
 let g:vimwiki_list = [wiki]
 
 
