@@ -2,5 +2,6 @@ _backup/
 _tmp/
 _undo/
 bundle/
+spell/
 .directory
 viminfo
