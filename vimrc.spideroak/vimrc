@@ -4,47 +4,52 @@ set nocompatible		" Put this first in vimrc (because it affects many other setti
 
 "===== VUNDLE ==========================
 " :PluginList			-  list configured plugins
-" :PluginInstall[!]		-  install (! => update) plugins
+" :PluginInstall[!]		-  install (! => bzw. update) plugins
 " :PluginUpdate			-  update plugins
 " :PluginSearch[!] foo	-  search (! => refresh cache first) for foo
 " :PluginClean[!]		-  confirm (! => auto-approve) removal of unused plugins
 " OR s/Plugin/Vundle/
-" See :help vundle for more details or https://github.com/VundleVim/Vundle.vim/wiki for FAQ
-" NOTE: Add to .gitignore: 'bundle/**' and then exception '~bundle/Vundle.vim' so that git tracks only vundle itself.
+" See :help vundle for more details or https://github.com/VundleVim/Vundle.vim/wiki for FAQ.
+" NOTE: Add to .gitignore: 'bundle/**' and then the exception '~bundle/Vundle.vim' so that git tracks only vundle itself.
 
 filetype off  " Required for Vundle startup; turn on again afterwards.
 set runtimepath+=$HOME/.vim/bundle/Vundle.vim/
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim' " Let Vundle manage Vundle. Required.
 
-"-- original github repos --
+"-- github repos --
 Plugin 'tpope/vim-abolish'			" Easily search for, substitute, and abbreviate multiple variants of a word.
 Plugin 'bling/vim-airline'			" Powerful yet light statusline. :help airline for config options.
-Plugin 'ebassett/vim-autoclose'		" Auto-closes (, [, {, \", '.
+Plugin 'ebassett/vim-autoclose'		" Auto-closes (, [, {, \", '. Forked from vim-scripts/AutoClose.
 Plugin 'gioele/vim-autoswap'		" Deal more intelligently with .swp files.
-Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc. :help easymotion
+Plugin 'vim-scripts/diffchanges.vim'	" Show changes since last save. <Leader>diff => :DiffChangesDiffToggle
+Plugin 'Lokaltog/vim-easymotion'	" Super-quick jump to word/line/search-term/etc. :help easymotion.
 Plugin 'tpope/vim-eunuch'			" Vim sugar for some Unix shell commands, eg. :Rename, :SudoWrite.
 Plugin 'terryma/vim-expand-region'	" See expand_region mapping below.
-"Plugin 'tpope/vim-fugitive'		" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/
+Plugin 'tpope/vim-fugitive'			" git plugin. See http://vimcasts.org/blog/2011/05/the-fugitive-series/.
+									" airline needs this in order to detect and display the branch.
+"Plugin 'airblade/vim-gitgutter'	" Indicate added/deleted/edited lines when using git.
+Plugin 'nathanaelkane/vim-indent-guides'  " <Leader>ig => :IndentGuidesToggle
+"Plugin 'davidhalter/jedi-vim'		" Auto-completion library for Python.
 if has('unix')
-	Plugin 'gergap/vim-konsole'			" KDE helper for autoswap.
+	Plugin 'gergap/vim-konsole'		" KDE helper for autoswap. Requires `wmctrl` package from OS repo.
 endif
 Plugin 'vim-scripts/matchit.zip'	" Use '%' to jump between opening/closing HTML/XML tags, if/else-if/else, etc.
-"Plugin 'weynhamz/vim-plugin-minibufexpl'	" Tabline for open buffers.
-Plugin 'vim-scripts/MultipleSearch'	" Highlight multiple search terms in different colours. :help MultipleSearch
-Plugin 'scrooloose/nerdtree'		" File explorer. (:help nerdtree) I have :NERDTreeToggle mapped to <F2>
+Plugin 'vim-scripts/MultipleSearch'	" Highlight multiple search terms in different colours. :help MultipleSearch.
+Plugin 'scrooloose/nerdtree'		" File explorer. (:help nerdtree) I have :NERDTreeToggle mapped to <F2>.
 Plugin 'vim-scripts/python_match.vim' " Use '%' to jump between Python if/elif/else, try/except/catch, etc.
 Plugin 'tpope/vim-ragtag'			" Convenience for XML/HTML tags.
-Plugin 'kien/rainbow_parentheses.vim'  " Colours parentheses and brackets according to nesting.
+Plugin 'kien/rainbow_parentheses.vim'	" Colours parentheses and brackets according to nesting.
 Plugin 'tpope/vim-repeat'			" Lets '.' (repeat) work with (supported) plugin commands.
-"Plugin 'msanders/snipmate'			" Code snippets.
+"Plugin 'msanders/snipmate'			" Code snippets. See garbas/vim-snipmate for more recent fork.
 Plugin 'tpope/vim-speeddating'		" Use CTRL-A/CTRL-X to increment/decrement dates, times, and more.
 Plugin 'mhinz/vim-startify'			" Startup screen with recently-used files, sessions, bookmarks, etc.
+"Plugin 'ervandew/supertab'			" Perform all your vim insert mode completions with Tab.
 Plugin 'tpope/vim-surround'			" Wrap existing text in quotes, brackets, tags, etc.
-Plugin 'majutsushi/tagbar'			" Sidebar for coding symbols (ctags).
+"Plugin 'majutsushi/tagbar'			" Sidebar for coding symbols (ctags).
 Plugin 'tomtom/tcomment_vim'		" Toggle line-/block-wise comments.
 Plugin 'tpope/vim-unimpaired'		" Short Normal-mode aliases for commonly-used ex commands.
-Plugin 'ebassett/vimwiki'			" Personal wiki.
+Plugin 'vimwiki/vimwiki'			" Personal wiki.
 
 "-- vim.org/scripts repos --
 "Example:	Plugin 'python_match.vim'
@@ -61,6 +66,8 @@ filetype plugin indent on  " Required. Equivalent to 'filetype on' AND 'filetype
 
 "===== GENERAL =========================
 syntax on				" I believe this has to occur early in the vimrc.
+" TODO: Move or qualify; this breaks Vundle (at least) under Windows.
+set shell=/bin/bash\ --rcfile\ ~/.vim/vimbashrc
 set fileformats+=mac	" Might as well add this. (Defaults: unix,dos under unix; dos,unix under Windows.)
 
 "_____Tabbing and Indenting_____
@@ -71,7 +78,7 @@ set shiftround 			" Round the indention nicely with other indents.
 set smarttab
 "set expandtab			" Convert tabs to spaces. I don't think I want this globally.
 set autoindent
-set smartindent			" cf. cindent
+set smartindent			" cf. cindent.
 
 "_____Other text manipulation_____
 set textwidth=0			" NEVER automatically insert a hard newline.
@@ -80,32 +87,34 @@ set linebreak			" Soft-wrap at word boundaries rather than right at the end of t
 set formatoptions+=rjl	" r = prefix comment character on Enter from a comment line;
 						" j = drop second comment marker when joining two comment lines;
 						" l = don't hard-wrap long lines.
-set nrformats-=octal	" With CTRL-A/X inc-/decrementing, don't treat leading zero as octal.
+set nrformats-=octal	" With CTRL-A/X inc-/decrementing, DON'T treat leading zero as octal.
 set pastetoggle=<F3>	" Allow pasting from system clipboard into terminal vim without messing up indents.
 						" See also the <F3> keymapping below.
 
 "_____Extra-textual info/visibility_____
 set number				" Line numbers (absolute). See KEY-MAPPINGS and FUNCTIONS for relative-numbering toggle.
-set showmode			" Shows the mode in the last line. (This is actually on by default.)
+set showmode			" Shows the mode in the last line. (This is actually on by default, but I like explicit.)
 set showmatch			" Show matching brackets.
 set cursorline			" Highlight current line.
 "set cursorcolumn		" Hightlight current column.
-set report=0			" Always tell us when anything is changed via a ':' command.
+set report=0			" 0 => ALWAYS tell us when anything is changed via a ':' command.
 set showcmd				" Show the command being typed.
 set ruler				" Always show current positions along the bottom.
 set laststatus=2		" Always show the statusline. See vim-airline plugin for statusline settings.
+set display=lastline	" If a line doesn't fit on the screen, show as much of it as possible.
 "set list				" Display non-printing characters (according to listchars). ← → ⇐ ⇒ « » ␣ …
 set listchars=eol:¶,extends:→,nbsp:␣,tab:»—,trail:·,precedes:←  " Chars for non-printing chars (if 'list' is set).
 if v:version >= 800
 	set listchars+=space:·
 endif
 if v:version >= 800
-	set breakindent		" Visually indent wrapped lines to match beginning of linel.
+	set breakindent		" Visually indent wrapped lines to match beginning of line.
 endif
 set showbreak=\|		" String to indicate soft-wrapped lines. ‖
 set noerrorbells		" Suppress audible bell.
-set novisualbell		" Suppress visual bell. cf. t_vb
+set novisualbell		" Suppress visual bell. cf. t_vb.
 set history=100			" Remember last n commands/searchs/etc.
+set lazyredraw			" Do not redraw screen during (eg.) macro execution.
 
 "_____Movement_____
 set backspace=indent,eol,start
@@ -113,7 +122,7 @@ set nostartofline		" Don't always move cursor to beginning of line; leave it in 
 set scrolloff=3			" Minimum number of screen lines to keep above and below the cursor.
 set sidescrolloff=5		" Minimum number of characters to keep when scrolling long lines.
 set whichwrap=b,s,<,>,[,],~	" Allow these to traverse lines: <BS>, <SPACE>, <LEFT>, <RIGHT>, ~.
-set matchpairs+=<:>		" Make % jump between these pairs of characters.
+set matchpairs+=<:>		" Make % also jump between these pairs of characters.
 
 "_____Searching_____
 set gdefault			" Default to substituting globally on lines (g option). Add explicit g to reverse.
@@ -121,8 +130,9 @@ set ignorecase			" Necessary for smartcase to work.
 set smartcase			" Case-sensitive if any capitals in search term, else insensitive. '\c' forces insensitive; '\C' forces sensitive.
 set incsearch			" Incremental search: start matching as soon as you start typing search term.
 set hlsearch			" Highlight search matches.
-set nowrapscan			" Do NOT continue search from top when you reach the bottom.
-set wildmenu			" Autocompletion stuff.
+set nowrapscan			" Do NOT, EVER, continue search from top when you reach the bottom. I hate that.
+" Autocompletion stuff.
+set wildmenu
 set wildmode=longest,list,full
 set wildignore+=.git/**
 set wildignore+=*~,*.bak,*.class,*.pyc,*.sw?
@@ -146,7 +156,7 @@ set spelllang=en_ca
 
 "===== GUI (gvim) SETTINGS =============
 if has('gui_running')
-	colorscheme torte 	" My color scheme (looks horrid in terminal for some reason).
+	colorscheme torte 	" Dark.
 	set columns=120 	" Default window size.
 	set lines=50		" Default window size.
 	set mousehide		" Hide the mouse cursor when typing (only works in GUI).
@@ -155,8 +165,7 @@ if has('gui_running')
 	set guicursor+=i-ci:ver50-Cursor/lCursor	" Make the insert cursor wider than the default.
 else " Running in terminal
 	set background=dark	" Background is dark so highlight syntax with light colours.
-	set t_Co=256		" Number of colours that the terminal supports. This looks nice on mine...
-	" Don't use underline to hightlight current line in terminal; use a background colour.
+	" Don't use underline to highlight current line in terminal; use a background colour.
 	if &cursorline
 		highlight CursorLine  cterm=NONE ctermbg=DarkGrey
 	endif
@@ -172,7 +181,7 @@ if has('win32') || has('win64')		" I'm not sure I need these settings; they're n
 	source $VIMRUNTIME/mswin.vim	" Just remaps CTRL-C/V/X/Z, I think.
 	behave mswin					" Just changes some mouse-selection settings.
 	set guifont=Consolas:h10,Lucida_Console:h10	" First choice, fallback.
-	" TODO: :help renderoptions (eg. for DirectX)
+	" TODO: See :help renderoptions (eg. for DirectX)
 endif
 
 
@@ -184,7 +193,7 @@ set nobackup				" ...but delete the backup upon successful completion of the sav
 set directory=$HOME/.vim/_tmp//
 set undofile
 set undodir=$HOME/.vim/_undo//
-set viminfo+=n$HOME/.vim/viminfo	" Platform-independent name&location, not .viminfo vs _viminfo
+set viminfo+=n$HOME/.vim/viminfo	" Platform-independent name&location, not .viminfo vs _viminfo.
 
 
 "===== KEY-MAPPINGS ====================
@@ -203,7 +212,6 @@ noremap! <S-Insert> <MiddleMouse>
 nnoremap Y y$
 " Delete to the black-hole register.
 nnoremap <Leader>d "_d
-" Delete to the black-hole register.
 nnoremap <Leader>x "_x
 "Bubble single lines (http://vimcasts.org/episodes/bubbling-text).
 nnoremap <C-S-Up> ddkP
@@ -214,63 +222,80 @@ vnoremap <C-S-Down> xp`[V`]
 " Hard linebreak at cursor (from and remaining in Normal mode).
 " TODO: If at end of line, don't take last non-<CR> character.
 nnoremap <Leader><CR> i<CR><ESC>
-" Blank line below/above current (remaining in Normal mode) Without <Leader> switches to Insert.
+" Blank line below/above current (remaining in Normal mode). (Without <Leader> switches to Insert.)
 nnoremap <Leader>o o<ESC>
 nnoremap <Leader>O O<ESC>
-" Toggle paste mode to paste properly indented text in the terminal. Not needed for gvim.
+" Toggle paste mode to paste properly indented text in the terminal. Not needed for gvim.)
 " This echoes the paste mode to the status line as well. See also 'set togglepaste' above.
 nnoremap <silent> <F3> :set invpaste paste?<CR>
 " Insert short/long date (ie. write it to clipboard and then paste that in).
 nnoremap <Leader>date "=strftime("%Y-%m-%d")<CR>p
 nnoremap <Leader>DATE "=strftime("%A %d %B %Y %H:%M:%S")<CR>p
-" No-op keys that cause more trouble than they're worth when hit accidentally.
-"   Normally starts Ex mode
+" No-op the keys that cause more trouble than they're worth when hit accidentally.
+"   Normally starts Ex mode.
 nnoremap Q <nop>
-"   Normally opens man page for word under cursor
+"   Normally opens man page for word under cursor.
 nnoremap K <nop>
-" Tab in Normal mode does nothing; make it switch to Insert mode, tab, return to Normal mode. NOTE: BREAKS CTRL-I navigation
+" Tab in Normal mode does nothing; make it switch to Insert mode, tab, return to Normal mode. NOTE: BREAKS CTRL-I navigation.
 "nnoremap <TAB> i<TAB><ESC>l
-" Space in Normal mode does nothing useful; make it switch to Insert mode, space, return to Normal mode.
-"nnoremap <SPACE> i<SPACE><ESC>l
-" Backspace in Normal mode does nothing useful; make it switch to Insert mode, backspace, return to Normal mode.
-"nnoremap <BS> i<BS><ESC>l
-" Jump to end of pasted text
+" <SPACE> in Normal mode does nothing useful; make it page forward. With Shift, page backward.
+nnoremap <SPACE> <C-f>
+nnoremap <S-SPACE> <C-b>
+" Jump to end of pasted text.
 vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
-" Quickly select text you just pasted
+" Quickly select text you just pasted.
 noremap gV `[v`]
-" Use expand-region plugin; repeatedly hitting 'v' expands scope of selection; CTRL-v shrinks it
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
+" Use expand-region plugin; repeatedly hitting 'v' expands scope of selection; CTRL-v shrinks it.
+vnoremap v <Plug>(expand_region_expand)
+vnoremap <C-v> <Plug>(expand_region_shrink)
+" Place cursor inside double-backticks (esp. for vimwiki). vim-autoclose does this for '/".
+inoremap `` ``<Left>
+
 
 "_____Extra-textual info/visibility_____
 " Use 'kj' to get out of Insert mode into Normal mode.
 inoremap kj <ESC>
-" Swap ':' and ';' in Normal mode and Visual mode
+" Avoid mistakes with accidental Caps Lock.
+noremap KJ <ESC>:echo "CAPS LOCK is on."
+" Swap ':' and ';' in Normal mode and Visual mode.
 nnoremap : ;
 nnoremap ; :
 vnoremap : ;
 vnoremap ; :
-" Toggle absolute/relative line-numbering
+" Toggle absolute/relative/no line-numbering.
 nnoremap <Leader>num :call g:ToggleNumberMode()<CR>
 "noremap <C-v> :echo "Use \<Leader\>p to paste from system clipboard."<CR>
 noremap <Leader>l :setlocal list!<CR>
 noremap <F2> :execute 'NERDTreeToggle ' . getcwd()<CR>
 nnoremap <Leader>R :RainbowParenthesesToggle<CR>
 noremap <F8> :execute 'TagbarToggle'<CR>
+" Show changes since last save.
+nnoremap <Leader>diff :DiffChangesDiffToggle<CR>
+" Would 'guides' be more mnemonic?
+nnoremap <Leader>ig :IndentGuidesToggle<CR>
+
 
 "_____Movement_____
-" Swap line-wise vs row-wise behaviour of {j|k} and g{j|k}
+" Swap screen-line-wise vs logical-line-wise behaviour of {j|k} and g{j|k} in Normal mode.
 nnoremap j gj
 nnoremap k gk
 nnoremap gj j
 nnoremap gk k
-" Make arrow keys work (screen-line-wise) in Visual mode.
+" Make arrow keys work (logical-line-wise) in Visual mode. And {j|k} screen-line-wise.
 vnoremap <Left> h
 vnoremap <Right> l
-vnoremap <Up> gk
-vnoremap <Down> gj
+vnoremap <Up> k
+vnoremap <Down> j
+vnoremap j gj
+vnoremap k gk
+" When using 'gg' to go to first line, also go to start of line.
+nnoremap gg gg0
+" <Leader>Shift-g goes to last *non-blank* line.
+nnoremap <Leader><S-g> <S-g>{}
+" TODO: move this to .vim/ftplugin/vimwiki.vim
+nnoremap <Leader>wg :VimwikiGoto<Space>
 
 "_____Searching_____
 " 'Very magic' (:help \v) regexes (less escaping) for '/' and '?' searches.
@@ -284,10 +309,15 @@ cnoremap %s# %smagic#
 cnoremap >s# >smagic#
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
-" Clear search highlights, including from :Search (MultipleSearch plugin)
-nnoremap <Leader><Space> :nohlsearch \| :Search \| :SearchReset<CR>
-"Shortcut for :VWS (VimWikiSearch)
+" Clear search highlights, including from :Search (MultipleSearch plugin).
+nnoremap <Leader><Space> :nohlsearch \| :SearchReset<CR>
+"Shortcut for VWS (cf. VimWikiSearch) - TODO: move this to .vim/ftplugin/vimwiki.vim?
 nnoremap <Leader>? :VWS ##<Left>
+
+"_____Misc._____
+" TODO: Map ':args FILE1 FILE2...' to something more mnemonic for opening multiple files in buffers.
+" Alias :shell to :bash. Reminder: only works if typed quickly.
+nnoremap ;bash :shell
 
 "===== COMMAND ALIASES =================
 " See http://blog.sanctum.geek.nz/vim-command-typos
@@ -300,19 +330,21 @@ command! -bang WA wa<bang>
 command! -bang Q q<bang>
 command! -bang QA qa<bang>
 command! -bang Qa qa<bang>
-" Speed up vimgrep (ignore Autocommand events when opening files for grepping)
+" Speed up vimgrep (ignore Autocommand events when opening files for grepping).
 command! -nargs=* Vimgrep  noautocmd vimgrep <args>
+"TODO: Is there any way to make :w write ONLY when there are changes?
+"  => Yes: :update (or :up for short).
+"    => TODO: How to map :w (and :wq, etc.) to use :update?
 
 
 "===== AUTOCOMMANDS ====================
 " EJB: Settings for my notes to myself: never tabs, always spaces, tab=2 spaces.
+" Or should these be set on FileType=vimwiki, rather than on file extension?
 augroup EJB
 	autocmd! EJB
 	autocmd BufRead,BufNewFile  *.wiki setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
 	autocmd BufRead,BufNewFile  *.wiki syn match Todo "\<\(TODO\|EJB\)"
-	autocmd BufRead,BufNewFile  *.wiki setlocal commentstring=//\ %s
-	" Scroll to end of file on opening, then find the last non-blank line.
-	autocmd BufRead             *.wiki :normal! G{}
+	" Let me type '{{{' in vimwiki without adding line-feeds and indents.
 	autocmd BufRead             *.wiki let g:autoclose_openspecial = 0
 augroup END
 
@@ -321,10 +353,10 @@ augroup HELP_IN_TABS
 	autocmd BufEnter  *.txt  call HelpInNewTab()
 augroup END
 
-" Type detection for JSON files.
+" Pretty-print (indent) JSON with eg. gg=G
 augroup JSON
 	autocmd! JSON
-	autocmd BufRead,BufNewFile  *.json  set filetype=javascript
+	autocmd FileType  json  setlocal equalprg=python3\ -m\ json.tool\ 2>/dev/null
 augroup END
 
 " Python as per PEP 8 (http://www.python.org/dev/peps/pep-0008/).
@@ -339,22 +371,23 @@ augroup VIMRC
 	autocmd BufWritePost  $MYVIMRC  AirlineRefresh	" Otherwise (only for vimrc) airline loses colours.
 augroup END
 
-" Pretty-print (indent) XML with eg. gg=G - Requires xmllint in $PATH
+" Pretty-print (indent) XML with eg. gg=G - Requires xmllint in $PATH.
 augroup XML_INDENT
 	autocmd! XML_INDENT
 	autocmd FileType  xml  setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 augroup END
 
 "===== FUNCTIONS =======================
-" Open help files in new tabs. cf. HELP_IN_TABS augroup
+" Open help files in new tabs. cf. HELP_IN_TABS augroup.
 function! HelpInNewTab()
 	if &buftype == 'help'
 		execute "normal \<C-W>T"
 	endif
 endfunction
 
-" Sort characters as characters, numbers as numbers
+" Sort characters as characters, numbers as numbers.
 " Usage: let sortedlist = sort(mylist, "NaturalSort")
+" TODO: Figure out / ask (on StackOverflow o.Ä.) how to USE this on a file, in place.
 function! g:NaturalSort(i, j)
 	return (a:i+0) - (a:j+0)
 endfunction
@@ -396,9 +429,10 @@ let g:airline#extensions#whitespace#mixed_indent_algo = 2
 let g:startify_custom_header = []
 let g:startify_bookmarks = [
 		\ {"ww": $HOME."/vimwiki/index.wiki"},
-		\ {"rc": $HOME."/.vimrc"},
-		\ $HOME."/.bashrc",
-		\ $HOME."/.bash_aliases",
+		\ {"td": $HOME."/vimwiki/TODO.wiki"},
+		\ {"rc": $HOME."/.vim/vimrc"},
+		\ {"sh": $HOME."/.bashrc"},
+		\ {"al": $HOME."/.bash_aliases"},
 		\ ]
 let g:startify_skiplist = [
 		\ '^/tmp',
@@ -409,28 +443,39 @@ let g:startify_skiplist = [
 
 "_____vimwiki_____
 let g:vimwiki_use_mouse = 1
-let g:vimwiki_url_maxsave = 0		" Don't shorten URLs.
+let g:vimwiki_url_maxsave = 0		" Do NOT shorten URLs, ever. I like explicit, full information.
+let g:vimwiki_hl_headers = 1		" Use different colours for different header-levels.
+let g:vimwiki_auto_chdir = 1		" `:lcd` to the Vimwiki folder to where the page belongs.
 " let g:vimwiki_hl_cb_checked = 1	" Highlight lines with checked checkboxes.
 " let g:vimwiki_listsyms = ' ○◐●✓'	" Use these to show how done a parent task is.
-let ejb_wiki = {'path': '~/vimwiki/'}
-" let ejb_wiki.auto_tags = 1
-" let ejb_wiki.auto_toc = 1
+" let g:vimwiki_listsym_rejected = '✗'	" Use this to show a task that won't be done.
+let ejb_wiki = {'path': '~/vimwiki/'}	" This is the default path, but I like explicit.
+" let ejb_wiki.auto_tags = 1		" Update tags on every save.
+" let ejb_wiki.auto_toc = 1			" Update TOC on every save.
 let g:vimwiki_list = [ejb_wiki]
 
 
 "===== ABBREVIATIONS ===================
-"_____Snippets_____ " EJB: There's probably a better way to do this.
+"_____Snippets_____
+" EJB: There's probably a better way to do this.
+" EJB:   '<Leader>wiki' => [insert that text] ?  (<Leader>ww opens my vimwiki.)
 iabbr #vim: # vim: expandtab shiftwidth=2 filetype=vimwiki<ESC>
 
 "_____Spelling corrections_____
+" Sorted by correct spelling.
 iabbr becuase because
 iabbr binaires binaries
 iabbr execpt except
+iabbr layber layer
 iabbr mabye maybe
+iabbr numberal numeral
 iabbr prelfight preflight
+iabbr renumeration remuneration
+iabbr serach search
 iabbr taht that
 iabbr teh the
 iabbr varaible variable
 iabbr varaibles variables
 iabbr verison version
+iabbr verisons versions
 
